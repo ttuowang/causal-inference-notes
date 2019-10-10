@@ -13,14 +13,43 @@ knitr::opts_chunk$set(
 
 This lecture note will cover the following topics:
 
+- Exact Matching
+- Propensity Score Matching
 - Multivariate Caliper Matching
 - Matching with Multiple Controls
+- Full Matching
 
-## Quick Review on Propensity Score
+## What is matching?
 
+In observational study, absent random assignment, treated and control individuals may differ in terms of covariates, so direct comparison of the outcomes of treated individuals and controls may compare individuals who are not comparable - that is, a direct comparison may be biased as an estimate of the effect caused by the treatment.
+
+Pros:
+
+- Simple and intuitive
+- Blinding to outcome info
+- Diagnostic for overlap is easy
+
+Cons:
+
+- Theory is difficult
+- It requires a lot of practice.
+
+## Exact Matching
+
+**Idea:** Pair people with identical $X$s
+
+## Propensity Score Matching
+
+**Quick Review on Propensity Score:**
 Propensity score is the conditional probability of exposure to treatment given the observed covariates, $e(\mathbf{x}) = \mathbb{Pr}(A = 1|\mathbf{x})$, where $\mathbf{x}$ is the covaraites and $A$ is the intervention variable. The propensity score is unkown, but it can be estimated from the data. For example, we can use the logistic regression:
 
 $$\log\{\frac{e(\mathbf{x_i})}{1 - e(\mathbf{x_i})}\} = \beta_0 + \mathbf{x_i}^T\bf{\beta}$$
+
+**Idea:** Pair people with similar $e(X)$. We know $X \perp A | e(X)$.
+
+Calculate the propensity score for all subjects. Define the distance between subject i in the treatment group and subject j in the control group as:
+
+$$d(\mathbf{x_i}, \mathbf{x_j}) = \big|\text{logit}(e(\mathbf{x_i})) - \text{logit}(e(\mathbf{x_i}))\big|$$
 
 ## Multivariate Caliper Matching
 
@@ -81,3 +110,14 @@ For example, $m=1$ means paired matching, then $1+\frac{1}{m} = 2$. If $m = +\in
 
 - Pros: Efficiency. More samples are included inside matched sets.
 - Cons: Balance becomes terrible.
+
+## Full Matching
+
+In full matching, we can accept one treated matched with multiple controls and many treated matched with one control.
+
+
+
+
+
+
+
