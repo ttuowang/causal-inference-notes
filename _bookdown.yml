@@ -3,4 +3,5 @@ language:
   ui:
     chapter_name: "Chapter "
 delete_merged_file: true
+repo: https://github.com/ttuowang/causal-inference-notes
 output_dir: docs
