@@ -24,7 +24,7 @@
 <meta name="author" content="Tuo Wang" />
 
 
-<meta name="date" content="2019-10-10" />
+<meta name="date" content="2019-10-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -81,7 +81,9 @@
 <li class="chapter" data-level="2.5" data-path="matching.html"><a href="matching.html#matching-with-multiple-controls"><i class="fa fa-check"></i><b>2.5</b> Matching with Multiple controls</a></li>
 <li class="chapter" data-level="2.6" data-path="matching.html"><a href="matching.html#full-matching"><i class="fa fa-check"></i><b>2.6</b> Full Matching</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="sensitivity.html"><a href="sensitivity.html"><i class="fa fa-check"></i><b>3</b> Sensitivity Analysis</a></li>
+<li class="chapter" data-level="3" data-path="sensitivity.html"><a href="sensitivity.html"><i class="fa fa-check"></i><b>3</b> Sensitivity Analysis</a><ul>
+<li class="chapter" data-level="3.1" data-path="sensitivity.html"><a href="sensitivity.html#sensitivity-analysis-for-matched-sets-with-binary-outcomes"><i class="fa fa-check"></i><b>3.1</b> Sensitivity Analysis for Matched Sets with Binary Outcomes</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -104,7 +106,97 @@
             <section class="normal" id="section-">
 <div id="sensitivity" class="section level1">
 <h1><span class="header-section-number">Chapter 3</span> Sensitivity Analysis</h1>
+<p>This chapter will cover the following topics:</p>
+<p>Sensitivity analysis is designed to answer what does an unmeasurable variable do in terms of impacting our causal condlusions about A and Y.</p>
+<div id="sensitivity-analysis-for-matched-sets-with-binary-outcomes" class="section level2">
+<h2><span class="header-section-number">3.1</span> Sensitivity Analysis for Matched Sets with Binary Outcomes</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Matched set id</th>
+<th>subject</th>
+<th>covariate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Matched set 1</td>
+<td>Bob-Scott</td>
+<td><span class="math inline">\(X_{Bob} \approx X_{Scott}\)</span></td>
+</tr>
+<tr class="even">
+<td>Matched set 2</td>
+<td>Jenn-Kathleen</td>
+<td><span class="math inline">\(X_{Jenn} \approx X_{Kathleen}\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\vdots\)</span></td>
+<td><span class="math inline">\(\vdots\)</span></td>
+<td><span class="math inline">\(\vdots\)</span></td>
+</tr>
+<tr class="even">
+<td>Matched set I</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>By ignorability assumption, <span class="math inline">\(Y_{i}(1), Y_{i}(0), X_{i} \perp A_{i}\)</span>, either one of the pair is equally likely to get treatment. Formally:
+<span class="math display">\[\begin{align*}
+p_1 &amp;= \text{Prob that Bob Smokes and Scott doesn&#39;t} \\
+1 - p_1 &amp;= \text{Prob that Scott Smokes and Bob doesn&#39;t}
+\end{align*}\]</span>
+Under assumption: <span class="math inline">\(p_1 = \frac{1}{2}\)</span>. More generally, <span class="math inline">\(p_s = \frac{1}{2}, \forall s=1,\cdots,I\)</span>. Suppose Bob is more like to smoke than Scott because he carries gene and <span class="math inline">\(p_1\)</span> could range between certain values, say:</p>
+<p><span class="math display">\[\frac{1}{1+\Gamma} \leq p_1 \leq \frac{\Gamma}{1+\Gamma}, \,\, \Gamma \geq 1\]</span>
+For example, <span class="math inline">\(\Gamma=1 \implies p_1 =\frac{1}{2}\)</span>, <span class="math inline">\(\Gamma=3 \implies 0.25 \leq p_1 \leq 0.75\)</span>.</p>
+<p><span class="math inline">\(\Gamma\)</span> is the sensitivity parameters. <span class="math inline">\(\Gamma = 1 \implies\)</span> random experiment given <span class="math inline">\(X\)</span>. <span class="math inline">\(\Gamma &gt; 1 \implies\)</span> non-random experiment of A due to uncertain variable U.</p>
+<p>Rewrite we can get,</p>
+<p><span class="math display">\[\frac{1}{\Gamma} \leq \frac{p_1}{1-p_1} \leq \Gamma,\]</span>
+where <span class="math inline">\(\frac{p_1}{1-p_1}\)</span> is the odds ratio of Bob smoking versus Scott smoking.</p>
+<p>Conside <span class="math inline">\(H_0: Y_i{(1)} = Y_i{(0)}\,\,\forall i\)</span></p>
+<p><span class="math display">\[\hat{ATE} = \frac{1}{I} \sum_{s=1}^{I} \delta_s,\]</span></p>
+<p>where <span class="math inline">\(\delta_s\)</span> is the difference in outcome between treated and control in matched set <span class="math inline">\(s\)</span>. We can use <span class="math inline">\(\hat{ATE}\)</span> to test <span class="math inline">\(H_0\)</span>. For simplicity, <span class="math inline">\(T= \frac{1}{I} \sum_{s=1}^{I} \delta_s\)</span>. Under <span class="math inline">\(H_0\)</span>:</p>
+<p><span class="math display">\[\begin{align*}
+Y_{Bob}(1) &amp;=  Y_{Bob}(0)\\
+Y_{Scott}(1) &amp;= Y_{Scott}(0)
+\end{align*}\]</span></p>
+<p>Thus,
+<span class="math display">\[\begin{align*}
+\delta_1 &amp;= 
+\begin{cases}
+    Y_{Bob}(1) - Y_{Scott}(0),&amp; p_1\\
+    Y_{Scott}(1) - Y_{Bob}(0),&amp; 1 - p_1
+\end{cases} \\
+&amp;= 
+\begin{cases}
+    Y_{Bob}(0) - Y_{Scott}(0),&amp; p_1\\
+    Y_{Scott}(0) - Y_{Bob}(0),&amp; 1 - p_1
+\end{cases}
+\end{align*}\]</span>
+<span class="math inline">\(\delta_1\)</span> only changes in sign denpending on who gets treated. Thus,</p>
+<p><span class="math display">\[\delta_1 = Q_1 \times |Y_{Bob}(0) - Y_{Scott}(0)|,\]</span>
+where <span class="math inline">\(Q_1 = \begin{cases}  1,&amp; p_1\\  -1,&amp; 1 - p_1 \end{cases}\)</span></p>
+<p>Thus under <span class="math inline">\(H_0\)</span>,</p>
+<p><span class="math display">\[T = \sum_{s=1}^{I} \delta_s = \sum_{s=1}^{I}Q_sC_s = \sum_{s:C_s\neq0}Q_s,\]</span>
+where <span class="math inline">\(Q_s = \begin{cases}  1,&amp; p_1\\  -1,&amp; 1 - p_1 \end{cases}\)</span> and <span class="math inline">\(C_s = 1\)</span> or <span class="math inline">\(0\)</span> in binary outcome</p>
+<p>We can add a term transform the term in the summation. That is <span class="math inline">\(Q_s = -1\)</span> or <span class="math inline">\(1\)</span>, we can do a easy linear transformation to let term equal <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>.</p>
+<p>Let <span class="math inline">\(d = \sum_{s=1}^{I} \mathbb{I}(C_s \neq 0)\)</span>. Then,
+<span class="math display">\[\frac{T+d}{2} = \sum_{s:C_s\neq0}\frac{Q_s+1}{2} \sim Bin(d, \frac{1}{2})\]</span>
+<span class="math inline">\(\frac{T+d}{2}\)</span> follows a binomial distribuiton with <span class="math inline">\(n=d\)</span> and <span class="math inline">\(p=\frac{1}{2}\)</span>.Thus the p-value = <span class="math inline">\(\mathbb{P}(Bin(d,\frac{1}{2}) &gt; \frac{T_{obs} + d}{2})\)</span>(Note that d is a constant once given observations).</p>
+<p>Now suupose <span class="math inline">\(p_1 \neq \frac{1}{2}\)</span> e.g. <span class="math inline">\(p_1 &gt; \frac{1}{2}\)</span> (Bob is more likely to smoke than scott). Instead we can assume <span class="math inline">\(p_1\)</span> is in a certain range i.e. <span class="math inline">\(\frac{1}{1+\Gamma} \leq p_1 \leq \frac{\Gamma}{1+\Gamma}\)</span>.</p>
+<p><strong>What is the new p-value if <span class="math inline">\(\Gamma &gt; 1\)</span>?</strong> We may not be able to find the exact p-value but we can find the range of the p-value, i.e. we can find the upper and lower bound of the p-value.</p>
+<p><span class="math display">\[\mathbb{P}(Bin(d, \frac{1}{1+\Gamma}) &gt; \frac{T_{obs}+d}{2}) \leq \mathbb{P}(\frac{T+d}{2} &gt; \frac{T_{obs}+d}{2}) \leq \mathbb{P}(Bin(d, \frac{\Gamma}{1+\Gamma}) &gt; \frac{T_{obs}+d}{2})\]</span></p>
+<p><strong>How to choose the value of <span class="math inline">\(\Gamma\)</span>:</strong></p>
+<ul>
+<li><ol style="list-style-type: decimal">
+<li>Compute the range of p-values for each <span class="math inline">\(\Gamma\)</span>, e.g <span class="math inline">\(\Gamma = 1,2,\cdots\)</span></li>
+</ol></li>
+<li><ol start="2" style="list-style-type: decimal">
+<li>Stop if the range of p-value contains <span class="math inline">\(\alpha = 0.05\)</span></li>
+</ol></li>
+</ul>
 
+</div>
 </div>
             </section>
 
@@ -151,7 +243,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+"download": ["causual-inference-notes.pdf", "causual-inference-notes.epub"],
 "toc": {
 "collapse": "subsection"
 }

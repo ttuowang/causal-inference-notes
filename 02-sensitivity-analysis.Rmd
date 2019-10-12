@@ -1,1 +1,94 @@
 # Sensitivity Analysis {#sensitivity}
+
+This chapter will cover the following topics:
+
+Sensitivity analysis is designed to answer what does an unmeasurable variable do in terms of impacting our causal condlusions about A and Y.
+
+## Sensitivity Analysis for Matched Sets with Binary Outcomes
+
+|Matched set id  |subject    |covariate      |
+|----------------|-----------|---------------|
+| Matched set 1  | Bob-Scott | $X_{Bob} \approx X_{Scott}$  |
+|    Matched set 2|  Jenn-Kathleen          | $X_{Jenn} \approx X_{Kathleen}$  |
+| $\vdots$    |    $\vdots$       |     $\vdots$          |
+| Matched set I |           |               |   
+
+By ignorability assumption, $Y_{i}(1), Y_{i}(0), X_{i} \perp A_{i}$, either one of the pair is equally likely to get treatment. Formally: 
+\begin{align*}
+p_1 &= \text{Prob that Bob Smokes and Scott doesn't} \\
+1 - p_1 &= \text{Prob that Scott Smokes and Bob doesn't}
+\end{align*}
+Under assumption: $p_1 = \frac{1}{2}$. More generally, $p_s = \frac{1}{2}, \forall s=1,\cdots,I$. Suppose Bob is more like to smoke than Scott because he carries gene and $p_1$ could range between certain values, say:
+
+$$\frac{1}{1+\Gamma} \leq p_1 \leq \frac{\Gamma}{1+\Gamma}, \,\, \Gamma \geq 1$$
+For example, $\Gamma=1 \implies p_1 =\frac{1}{2}$, $\Gamma=3 \implies 0.25 \leq p_1 \leq 0.75$. 
+
+$\Gamma$ is the sensitivity parameters. $\Gamma = 1 \implies$ random experiment given $X$. $\Gamma > 1 \implies$ non-random experiment of A due to uncertain variable U.
+
+Rewrite we can get,
+
+$$\frac{1}{\Gamma} \leq \frac{p_1}{1-p_1} \leq \Gamma,$$
+where $\frac{p_1}{1-p_1}$ is the odds ratio of Bob smoking versus Scott smoking.
+
+Conside $H_0: Y_i{(1)} = Y_i{(0)}\,\,\forall i$
+
+$$\hat{ATE} = \frac{1}{I} \sum_{s=1}^{I} \delta_s,$$
+
+where $\delta_s$ is the difference in outcome between treated and control in matched set $s$. We can use $\hat{ATE}$ to test $H_0$. For simplicity, $T= \frac{1}{I} \sum_{s=1}^{I} \delta_s$. Under $H_0$:
+
+\begin{align*}
+Y_{Bob}(1) &=  Y_{Bob}(0)\\
+Y_{Scott}(1) &= Y_{Scott}(0)
+\end{align*}
+
+Thus,
+\begin{align*}
+\delta_1 &= 
+\begin{cases}
+    Y_{Bob}(1) - Y_{Scott}(0),& p_1\\
+    Y_{Scott}(1) - Y_{Bob}(0),& 1 - p_1
+\end{cases} \\
+&= 
+\begin{cases}
+    Y_{Bob}(0) - Y_{Scott}(0),& p_1\\
+    Y_{Scott}(0) - Y_{Bob}(0),& 1 - p_1
+\end{cases}
+\end{align*}
+$\delta_1$ only changes in sign denpending on who gets treated. Thus,
+
+$$\delta_1 = Q_1 \times |Y_{Bob}(0) - Y_{Scott}(0)|,$$
+where $Q_1 = 
+\begin{cases}
+    1,& p_1\\
+    -1,& 1 - p_1
+\end{cases}$
+
+Thus under $H_0$,
+
+$$T = \sum_{s=1}^{I} \delta_s = \sum_{s=1}^{I}Q_sC_s = \sum_{s:C_s\neq0}Q_s,$$
+where $Q_s = 
+\begin{cases}
+    1,& p_1\\
+    -1,& 1 - p_1
+\end{cases}$ and $C_s = 1$ or $0$ in binary outcome
+
+We can add a term transform the term in the summation. That is $Q_s = -1$ or $1$, we can do a easy linear transformation to let term equal $0$ and $1$.
+
+Let $d = \sum_{s=1}^{I} \mathbb{I}(C_s \neq 0)$. Then,
+$$\frac{T+d}{2} = \sum_{s:C_s\neq0}\frac{Q_s+1}{2} \sim Bin(d, \frac{1}{2})$$
+$\frac{T+d}{2}$ follows a binomial distribuiton with $n=d$ and $p=\frac{1}{2}$.Thus the p-value = $\mathbb{P}(Bin(d,\frac{1}{2}) > \frac{T_{obs} + d}{2})$(Note that d is a constant once given observations).
+
+Now suupose $p_1 \neq \frac{1}{2}$ e.g. $p_1 > \frac{1}{2}$ (Bob is more likely to smoke than scott). Instead we can assume $p_1$ is in a certain range i.e. $\frac{1}{1+\Gamma} \leq p_1 \leq \frac{\Gamma}{1+\Gamma}$. 
+
+**What is the new p-value if $\Gamma > 1$?** We may not be able to find the exact p-value but we can find the range of the p-value, i.e. we can find the upper and lower bound of the p-value. 
+
+$$\mathbb{P}(Bin(d, \frac{1}{1+\Gamma}) > \frac{T_{obs}+d}{2}) \leq \mathbb{P}(\frac{T+d}{2} > \frac{T_{obs}+d}{2}) \leq \mathbb{P}(Bin(d, \frac{\Gamma}{1+\Gamma}) > \frac{T_{obs}+d}{2})$$
+
+**How to choose the value of $\Gamma$:**
+
+- 1. Compute the range of p-values for each $\Gamma$, e.g $\Gamma = 1,2,\cdots$
+- 2. Stop if the range of p-value contains $\alpha = 0.05$
+
+
+
+

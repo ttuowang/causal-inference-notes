@@ -115,7 +115,11 @@ For example, $m=1$ means paired matching, then $1+\frac{1}{m} = 2$. If $m = +\in
 
 In full matching, we can accept one treated matched with multiple controls and many treated matched with one control.
 
+**Assessing Balance from Full Matching:** Before-matching standardized difference calculation is the same as before. For after matching, we use a weighted harmonic mean. Specifically, let $s = 1, \cdots, S$ denote the $S$ matched sets. For each covariate X, the standarized difference after matching is computed as:
 
+$$\Delta_{X}=\frac{\frac{\sum_{s=1}^{s} w_{s}\left(\bar{X}_{s, A=1}-\tilde{X}_{s, A=0}\right)}{\sum_{s=1}^{s} w_{s}}}{\text { SE from before matching }}, \quad w_{s}=\frac{1}{\frac{1}{\text { Number of treated in } s}+\frac{1}{\text { Number of Controls in } s}}$$
+
+A matched pair has weight $w_s = 1$, so this generalization makes sense.
 
 
 

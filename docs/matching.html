@@ -24,7 +24,7 @@
 <meta name="author" content="Tuo Wang" />
 
 
-<meta name="date" content="2019-10-10" />
+<meta name="date" content="2019-10-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -81,7 +81,9 @@
 <li class="chapter" data-level="2.5" data-path="matching.html"><a href="matching.html#matching-with-multiple-controls"><i class="fa fa-check"></i><b>2.5</b> Matching with Multiple controls</a></li>
 <li class="chapter" data-level="2.6" data-path="matching.html"><a href="matching.html#full-matching"><i class="fa fa-check"></i><b>2.6</b> Full Matching</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="sensitivity.html"><a href="sensitivity.html"><i class="fa fa-check"></i><b>3</b> Sensitivity Analysis</a></li>
+<li class="chapter" data-level="3" data-path="sensitivity.html"><a href="sensitivity.html"><i class="fa fa-check"></i><b>3</b> Sensitivity Analysis</a><ul>
+<li class="chapter" data-level="3.1" data-path="sensitivity.html"><a href="sensitivity.html#sensitivity-analysis-for-matched-sets-with-binary-outcomes"><i class="fa fa-check"></i><b>3.1</b> Sensitivity Analysis for Matched Sets with Binary Outcomes</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -189,6 +191,9 @@ Propensity score is the conditional probability of exposure to treatment given t
 <div id="full-matching" class="section level2">
 <h2><span class="header-section-number">2.6</span> Full Matching</h2>
 <p>In full matching, we can accept one treated matched with multiple controls and many treated matched with one control.</p>
+<p><strong>Assessing Balance from Full Matching:</strong> Before-matching standardized difference calculation is the same as before. For after matching, we use a weighted harmonic mean. Specifically, let <span class="math inline">\(s = 1, \cdots, S\)</span> denote the <span class="math inline">\(S\)</span> matched sets. For each covariate X, the standarized difference after matching is computed as:</p>
+<p><span class="math display">\[\Delta_{X}=\frac{\frac{\sum_{s=1}^{s} w_{s}\left(\bar{X}_{s, A=1}-\tilde{X}_{s, A=0}\right)}{\sum_{s=1}^{s} w_{s}}}{\text { SE from before matching }}, \quad w_{s}=\frac{1}{\frac{1}{\text { Number of treated in } s}+\frac{1}{\text { Number of Controls in } s}}\]</span></p>
+<p>A matched pair has weight <span class="math inline">\(w_s = 1\)</span>, so this generalization makes sense.</p>
 
 </div>
 </div>
@@ -237,7 +242,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+"download": ["causual-inference-notes.pdf", "causual-inference-notes.epub"],
 "toc": {
 "collapse": "subsection"
 }
