@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Causal Inference</title>
+  <title>Chapter 6 notes on M-estimator | Causal Inference</title>
   <meta name="description" content="This is the notes of Causal Inference. Most of the materials come from STAT 992 instructed by Prof. Kang and from several textbooks in causal inference" />
   <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Causal Inference" />
+  <meta property="og:title" content="Chapter 6 notes on M-estimator | Causal Inference" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="ttuowang/causal-inference-notes" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Causal Inference" />
+  <meta name="twitter:title" content="Chapter 6 notes on M-estimator | Causal Inference" />
   
   <meta name="twitter:description" content="This is the notes of Causal Inference. Most of the materials come from STAT 992 instructed by Prof. Kang and from several textbooks in causal inference" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
+<link rel="prev" href="models.html"/>
 
-<link rel="next" href="basic.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -112,24 +112,18 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Causal Inference</h1>
-<p class="author"><em>Tuo Wang</em></p>
-<p class="date"><em>2019-10-21</em></p>
-</div>
-<div id="prerequisites" class="section level1">
-<h1><span class="header-section-number">Chapter 1</span> Prerequisites</h1>
-<p>This is the notes of Causal Inference. Most of the materials come from STAT 992 in UW-Madison instructed by Prof. Kang and from several textbooks in causal inference.</p>
-<p>Recommended textbook:</p>
+<div id="m-estimator" class="section level1">
+<h1><span class="header-section-number">Chapter 6</span> notes on M-estimator</h1>
+<p><strong>References:</strong></p>
 <ul>
 <li><ol style="list-style-type: decimal">
-<li>Paul Rosenbaum. “Design of OBservational Studies” (2010)</li>
+<li>Stefanski and Boos’s paper on M-estimation.</li>
 </ol></li>
 <li><ol start="2" style="list-style-type: decimal">
-<li>Miguel Hernan &amp; James Robins. “Causal Inference” (2019)</li>
+<li>Chapter 5 of Asymptotic Statistics by van der Vaart.</li>
 </ol></li>
 <li><ol start="3" style="list-style-type: decimal">
-<li>Guido Imbens and Don Rubin. “Causal Inference for Statistics, Social, and Biomedical Sciences” (2015)</li>
+<li>Pages 29 to 32 in Semiparametric Theory and Missing Data by Tsiastis.</li>
 </ol></li>
 </ul>
 
@@ -139,8 +133,8 @@
           </div>
         </div>
       </div>
+<a href="models.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="basic.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -172,7 +166,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/index.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/08-m-estimator.Rmd",
 "text": "Edit"
 },
 "history": {

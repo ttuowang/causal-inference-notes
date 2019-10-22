@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 causal Inference with Models | Causal Inference</title>
+  <title>Chapter 5 causal Inference with Models | Causal Inference</title>
   <meta name="description" content="This is the notes of Causal Inference. Most of the materials come from STAT 992 instructed by Prof. Kang and from several textbooks in causal inference" />
   <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 causal Inference with Models | Causal Inference" />
+  <meta property="og:title" content="Chapter 5 causal Inference with Models | Causal Inference" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="ttuowang/causal-inference-notes" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 causal Inference with Models | Causal Inference" />
+  <meta name="twitter:title" content="Chapter 5 causal Inference with Models | Causal Inference" />
   
   <meta name="twitter:description" content="This is the notes of Causal Inference. Most of the materials come from STAT 992 instructed by Prof. Kang and from several textbooks in causal inference" />
   
@@ -24,7 +24,7 @@
 <meta name="author" content="Tuo Wang" />
 
 
-<meta name="date" content="2019-10-12" />
+<meta name="date" content="2019-10-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="sensitivity.html"/>
-
+<link rel="next" href="m-estimator.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -70,25 +70,28 @@
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
-<li class="chapter" data-level="2" data-path="matching.html"><a href="matching.html"><i class="fa fa-check"></i><b>2</b> Matching</a><ul>
-<li class="chapter" data-level="2.1" data-path="matching.html"><a href="matching.html#what-is-matching"><i class="fa fa-check"></i><b>2.1</b> What is matching?</a></li>
-<li class="chapter" data-level="2.2" data-path="matching.html"><a href="matching.html#exact-matching"><i class="fa fa-check"></i><b>2.2</b> Exact Matching</a></li>
-<li class="chapter" data-level="2.3" data-path="matching.html"><a href="matching.html#propensity-score-matching"><i class="fa fa-check"></i><b>2.3</b> Propensity Score Matching</a></li>
-<li class="chapter" data-level="2.4" data-path="matching.html"><a href="matching.html#multivariate-caliper-matching"><i class="fa fa-check"></i><b>2.4</b> Multivariate Caliper Matching</a><ul>
-<li class="chapter" data-level="2.4.1" data-path="matching.html"><a href="matching.html#a-mahalanobis-distances"><i class="fa fa-check"></i><b>2.4.1</b> (a) Mahalanobis Distances</a></li>
-<li class="chapter" data-level="2.4.2" data-path="matching.html"><a href="matching.html#b-penalize-large-distance"><i class="fa fa-check"></i><b>2.4.2</b> (b) Penalize large distance</a></li>
+<li class="chapter" data-level="2" data-path="basic.html"><a href="basic.html"><i class="fa fa-check"></i><b>2</b> Propensity score</a></li>
+<li class="chapter" data-level="3" data-path="matching.html"><a href="matching.html"><i class="fa fa-check"></i><b>3</b> Matching</a><ul>
+<li class="chapter" data-level="3.1" data-path="matching.html"><a href="matching.html#what-is-matching"><i class="fa fa-check"></i><b>3.1</b> What is matching?</a></li>
+<li class="chapter" data-level="3.2" data-path="matching.html"><a href="matching.html#exact-matching"><i class="fa fa-check"></i><b>3.2</b> Exact Matching</a></li>
+<li class="chapter" data-level="3.3" data-path="matching.html"><a href="matching.html#propensity-score-matching"><i class="fa fa-check"></i><b>3.3</b> Propensity Score Matching</a></li>
+<li class="chapter" data-level="3.4" data-path="matching.html"><a href="matching.html#multivariate-caliper-matching"><i class="fa fa-check"></i><b>3.4</b> Multivariate Caliper Matching</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="matching.html"><a href="matching.html#a-mahalanobis-distances"><i class="fa fa-check"></i><b>3.4.1</b> (a) Mahalanobis Distances</a></li>
+<li class="chapter" data-level="3.4.2" data-path="matching.html"><a href="matching.html#b-penalize-large-distance"><i class="fa fa-check"></i><b>3.4.2</b> (b) Penalize large distance</a></li>
 </ul></li>
-<li class="chapter" data-level="2.5" data-path="matching.html"><a href="matching.html#matching-with-multiple-controls"><i class="fa fa-check"></i><b>2.5</b> Matching with Multiple controls</a></li>
-<li class="chapter" data-level="2.6" data-path="matching.html"><a href="matching.html#full-matching"><i class="fa fa-check"></i><b>2.6</b> Full Matching</a></li>
+<li class="chapter" data-level="3.5" data-path="matching.html"><a href="matching.html#matching-with-multiple-controls"><i class="fa fa-check"></i><b>3.5</b> Matching with Multiple controls</a></li>
+<li class="chapter" data-level="3.6" data-path="matching.html"><a href="matching.html#full-matching"><i class="fa fa-check"></i><b>3.6</b> Full Matching</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="sensitivity.html"><a href="sensitivity.html"><i class="fa fa-check"></i><b>3</b> Sensitivity Analysis</a><ul>
-<li class="chapter" data-level="3.1" data-path="sensitivity.html"><a href="sensitivity.html#sensitivity-analysis-for-matched-sets-with-binary-outcomes"><i class="fa fa-check"></i><b>3.1</b> Sensitivity Analysis for Matched Sets with Binary Outcomes</a></li>
+<li class="chapter" data-level="4" data-path="sensitivity.html"><a href="sensitivity.html"><i class="fa fa-check"></i><b>4</b> Sensitivity Analysis</a><ul>
+<li class="chapter" data-level="4.1" data-path="sensitivity.html"><a href="sensitivity.html#sensitivity-analysis-for-matched-sets-with-binary-outcomes"><i class="fa fa-check"></i><b>4.1</b> Sensitivity Analysis for Matched Sets with Binary Outcomes</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>4</b> causal Inference with Models</a><ul>
-<li class="chapter" data-level="4.1" data-path="models.html"><a href="models.html#ipw-estimator"><i class="fa fa-check"></i><b>4.1</b> IPW estimator</a></li>
-<li class="chapter" data-level="4.2" data-path="models.html"><a href="models.html#outcome-regression"><i class="fa fa-check"></i><b>4.2</b> Outcome Regression</a></li>
-<li class="chapter" data-level="4.3" data-path="models.html"><a href="models.html#doubly-robust-estimator"><i class="fa fa-check"></i><b>4.3</b> Doubly robust estimator</a></li>
+<li class="chapter" data-level="5" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>5</b> causal Inference with Models</a><ul>
+<li class="chapter" data-level="5.1" data-path="models.html"><a href="models.html#ipw-estimator"><i class="fa fa-check"></i><b>5.1</b> IPW estimator</a></li>
+<li class="chapter" data-level="5.2" data-path="models.html"><a href="models.html#outcome-regression"><i class="fa fa-check"></i><b>5.2</b> Outcome Regression</a></li>
+<li class="chapter" data-level="5.3" data-path="models.html"><a href="models.html#doubly-robust-estimator"><i class="fa fa-check"></i><b>5.3</b> Doubly robust estimator</a></li>
+<li class="chapter" data-level="5.4" data-path="models.html"><a href="models.html#asymptotic-variance"><i class="fa fa-check"></i><b>5.4</b> Asymptotic variance</a></li>
 </ul></li>
+<li class="chapter" data-level="6" data-path="m-estimator.html"><a href="m-estimator.html"><i class="fa fa-check"></i><b>6</b> notes on M-estimator</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -110,7 +113,7 @@
 
             <section class="normal" id="section-">
 <div id="models" class="section level1">
-<h1><span class="header-section-number">Chapter 4</span> causal Inference with Models</h1>
+<h1><span class="header-section-number">Chapter 5</span> causal Inference with Models</h1>
 <p>Throughout this chapter, we have the following set up :</p>
 <ul>
 <li><span class="math inline">\(Y_i\)</span>, <span class="math inline">\(A_i\)</span>, <span class="math inline">\(X_i\)</span> i.i.d <span class="math inline">\(\sim\)</span> <span class="math inline">\(F\)</span></li>
@@ -145,8 +148,8 @@
 <p>By assumption 3, <span class="math inline">\(\mathbb{E}\big[\frac{Y_iA_i}{e(X_i)}\big]\)</span> is well defined. Thus,</p>
 <p><span class="math display">\[\begin{align*}
 
-\mathbb{E}\big[\frac{Y_i(1-A_i)}{e(X_i)}\big] &amp;=\mathbb{E}_X \big\{
-\mathbb{E}\big[\frac{Y_i(1-A_i)}{e(X_i)} | X_i\big] \big\} \\
+\mathbb{E}\big[\frac{Y_iA_i}{e(X_i)}\big] &amp;=\mathbb{E}_X \big\{
+\mathbb{E}\big[\frac{Y_iA_i}{e(X_i)} | X_i\big] \big\} \\
 &amp;= \mathbb{E}_X \big\{ \frac{1}{e(X_i)} \mathbb{E} \big[ Y_iA_i | X_i\big] \big\} \\
 &amp;= \mathbb{E}_X \big\{ \frac{1}{e(X_i)} \mathbb{E} \big[ (Y_{i}(1)A_i + Y_{i}(0)(1-A_i))A_i | X_i\big] \big\} \\
 &amp;= \mathbb{E}_X \big\{ \frac{1}{e(X_i)} \mathbb{E} \big[ Y_i(1)A_i | X_i\big] \big\} \\
@@ -165,9 +168,10 @@
 \end{align*}\]</span></p>
 <p>We can prove <span class="math inline">\(\mathbb{E}[Y_i(0)]=\mathbb{E}_X\{ \mathbb{E}[Y_i | A_i=0, X_i] \}\)</span> by using the same procedure.</p>
 <div id="ipw-estimator" class="section level2">
-<h2><span class="header-section-number">4.1</span> IPW estimator</h2>
+<h2><span class="header-section-number">5.1</span> IPW estimator</h2>
 <p><strong>Idea:</strong> replace <span class="math inline">\(\mathbb{E}[.]\)</span> with sample means.</p>
-<p><span class="math display">\[\hat{\Large\tau}_{IPW} = \frac{1}{n} \sum_{i=1}^{n}\frac{Y_iA_i}{e(X_i)} - \frac{1}{n} \sum_{i=1}^{n}\frac{Y_i(1-A_i)}{1-e(X_i)}\]</span>
+<p><strong>Define:</strong>
+<span class="math display">\[\hat{\Large\tau}_{IPW} = \frac{1}{n} \sum_{i=1}^{n}\frac{Y_iA_i}{e(X_i)} - \frac{1}{n} \sum_{i=1}^{n}\frac{Y_i(1-A_i)}{1-e(X_i)}\]</span>
 To use <span class="math inline">\(\hat{\Large\tau}_{IPW}\)</span>, you need to know <span class="math inline">\(e(X_i) = \mathbb{P}(A_i=1 |X_i)\)</span>.</p>
 <p>From <strong>Law of Large Number</strong>:</p>
 <p><span class="math display">\[\frac{1}{n} \sum_{i=1}^{n}\frac{Y_iA_i}{e(X_i)} \rightarrow \mathbb{E} \big[\frac{Y_iA_i}{e(X_i)} \big]\]</span>
@@ -180,8 +184,9 @@ Further, from <strong>Central Limit Theorem:</strong> we have:</p>
 <p><span class="math display">\[\sqrt{n}(\hat{\Large\tau}_{IPW} - {\Large \tau}) \rightarrow N(0, \text{var}(\frac{Y_iA_i}{e(X_i)} - \frac{Y_i(1-A_i)}{1-e(X_i)}))\]</span></p>
 </div>
 <div id="outcome-regression" class="section level2">
-<h2><span class="header-section-number">4.2</span> Outcome Regression</h2>
-<p><span class="math display">\[\hat{\Large\tau}_{OR} = \frac{1}{n}\sum_{i=1}^{n} [f_1(X_i) - f_0(X_i)],\]</span>
+<h2><span class="header-section-number">5.2</span> Outcome Regression</h2>
+<p><strong>Define:</strong>
+<span class="math display">\[\hat{\Large\tau}_{OR} = \frac{1}{n}\sum_{i=1}^{n} [f_1(X_i) - f_0(X_i)],\]</span>
 where <span class="math inline">\(f_1(X_i) = \mathbb{E} \big[ Y_i|A_i=1,X_i\big]\)</span> and <span class="math inline">\(f_0(X_i) = \mathbb{E} \big[ Y_i|A_i=0,X_i\big]\)</span>.</p>
 <p>To use <span class="math inline">\(\hat{\Large\tau}_{OR}\)</span>, you need to know <span class="math inline">\(f_1(X_i)\)</span> and <span class="math inline">\(f_0(X_i)\)</span>.</p>
 <p>From <strong>Law of Large Number:</strong></p>
@@ -190,8 +195,9 @@ And further from <strong>Central Limit Theorem:</strong></p>
 <p><span class="math display">\[\sqrt{n}(\hat{\Large\tau}_{OR} - {\Large \tau}) \rightarrow N(0, \text{var}(f_1(X_i) - f_0(X_i)))\]</span></p>
 </div>
 <div id="doubly-robust-estimator" class="section level2">
-<h2><span class="header-section-number">4.3</span> Doubly robust estimator</h2>
-<p><span class="math display">\[\hat{\Large\tau}_{DR} = \frac{1}{n}\sum_{i=1}^{n} \bigg[\frac{(Y_i - f_1(X_i))A_i}{e(X_i)} + f_1(X_i)\bigg] - \frac{1}{n}\sum_{i=1}^{n} \bigg[\frac{(Y_i - f_0(X_i))(1-A_i)}{1-e(X_i)} + f_0(X_i)\bigg]\]</span></p>
+<h2><span class="header-section-number">5.3</span> Doubly robust estimator</h2>
+<p><strong>Define:</strong>
+<span class="math display">\[\hat{\Large\tau}_{DR} = \frac{1}{n}\sum_{i=1}^{n} \bigg[\frac{(Y_i - f_1(X_i))A_i}{e(X_i)} + f_1(X_i)\bigg] - \frac{1}{n}\sum_{i=1}^{n} \bigg[\frac{(Y_i - f_0(X_i))(1-A_i)}{1-e(X_i)} + f_0(X_i)\bigg]\]</span></p>
 <p>Suppose <span class="math inline">\(f_1(X_i)\)</span>, <span class="math inline">\(f_0(X_i)\)</span>, <span class="math inline">\(e(X_i)\)</span> are correct, we can show <span class="math inline">\(\hat{\Large\tau}_{DR} \rightarrow {\Large\tau}\)</span></p>
 <p><strong>proof:</strong></p>
 <p><span class="math display">\[\begin{align*}
@@ -202,6 +208,8 @@ And further from <strong>Central Limit Theorem:</strong></p>
 \end{align*}\]</span></p>
 <p>The same holds for the other part. Then,
 <span class="math display">\[\hat{\Large\tau}_{DR} \rightarrow \mathbb{E}[f_1(X_i)]-\mathbb{E}[f_0(X_i)]\rightarrow {\Large\tau}\]</span></p>
+<p>From <strong>Central Limit Theorem:</strong></p>
+<p><span class="math display">\[\sqrt{n}(\hat{\Large\tau}_{DR} - {\Large \tau}) \rightarrow N(0, \text{var}(\frac{(Y_i - f_1(X_i))A_i}{e(X_i)} + f_1(X_i) -\frac{(Y_i - f_0(X_i))(1-A_i)}{1-e(X_i)} - f_0(X_i)))\]</span></p>
 <p>Suppose the estimate propensity score is different from the true propensity score, i.e. <span class="math inline">\(\hat{e}(X) \neq e(X)\)</span>. Assume <span class="math inline">\(f_1\)</span> and <span class="math inline">\(f_0\)</span> are known.</p>
 <p><span class="math display">\[\hat{\Large\tau}_{DR,\hat{e}} = \frac{1}{n}\sum_{i=1}^{n} \bigg[\frac{(Y_i - f_1(X_i))A_i}{\hat e(X_i)} + f_1(X_i)\bigg] - \frac{1}{n}\sum_{i=1}^{n} \bigg[\frac{(Y_i - f_0(X_i))(1-A_i)}{1-\hat e(X_i)} + f_0(X_i)\bigg]\]</span></p>
 <p>We still have</p>
@@ -216,6 +224,37 @@ And further from <strong>Central Limit Theorem:</strong></p>
 <p><span class="math display">\[\hat{\Large\tau}_{DR,\hat{f}_1,\hat{f}_0} \rightarrow {\Large\tau}\]</span></p>
 <p>Suppose replace <span class="math inline">\(f_1\)</span>,<span class="math inline">\(f_0\)</span>,<span class="math inline">\(e\)</span> with estimate function <span class="math inline">\(\hat f_1\)</span>,<span class="math inline">\(\hat f_0\)</span>,<span class="math inline">\(\hat e\)</span>. If <span class="math inline">\(\hat f_1\)</span>,<span class="math inline">\(\hat f_0\)</span>,<span class="math inline">\(\hat e\)</span> are all l2 converge to <span class="math inline">\(f_1\)</span>,<span class="math inline">\(f_0\)</span>,<span class="math inline">\(e\)</span>, then</p>
 <p><span class="math display">\[\hat{\Large\tau}_{DR,\hat{e},\hat{f}_1,\hat{f}_0} \rightarrow {\Large\tau}\]</span></p>
+</div>
+<div id="asymptotic-variance" class="section level2">
+<h2><span class="header-section-number">5.4</span> Asymptotic variance</h2>
+<p><strong>Asymptotic variance of <span class="math inline">\(\hat{\Large\tau}_{IPW}\)</span>:</strong></p>
+<p><span class="math display">\[\begin{align*}
+\text{Var} \bigg[\frac{Y_iA_i}{e(X_i)} - \frac{Y_i(1-A_i)}{1-e(X_i)}\bigg] &amp;= \mathbb{E}\bigg[\frac{Y_iA_i}{e(X_i)} - \frac{Y_i(1-A_i)}{1-e(X_i)}\bigg]^2 - \bigg(\mathbb{E}\bigg[\frac{Y_iA_i}{e(X_i)} - \frac{Y_i(1-A_i)}{1-e(X_i)}\bigg]\bigg)^2\\
+&amp;= \mathbb{E}\bigg[\frac{Y_iA_i}{e(X_i)} - \frac{Y_i(1-A_i)}{1-e(X_i)}\bigg]^2 - \tau^2 \\
+&amp;= \mathbb{E}\bigg[ \frac{Y_i^2A_i^2}{e(X_i)^2} - 2\frac{Y_iA_iY_i(1-A_i)}{e(X_i)(1-e(X_i))}+ \frac{Y_i^2(1-A_i)^2}{[1-e(X_i)]^2}\bigg] - \tau^2 \\
+&amp;= \mathbb{E}\bigg[ \frac{Y_i^2A_i}{e(X_i)^2} + \frac{Y_i^2(1-A_i)}{[1-e(X_i)]^2}\bigg] - \tau^2 \\
+&amp;= \mathbb{E}\bigg[ \frac{(Y_{i}(1)A_i + Y_{i}(0)(1-A_i))^2A_i}{e(X_i)^2} \\
+&amp;\,\,\,\,\,\,+ \frac{(Y_{i}(1)A_i + Y_{i}(0)(1-A_i))^2(1-A_i)}{[1-e(X_i)]^2}\bigg] - \tau^2 \\
+&amp;= \mathbb{E}\bigg[ \frac{Y_i(1)^2A_i}{e(X_i)^2} + \frac{Y_i(0)^2(1-A_i)}{[1-e(X_i)]^2}\bigg] - \tau^2 \\
+&amp;= \mathbb{E}\bigg\{\mathbb{E}\bigg[ \frac{Y_i(1)^2A_i}{e(X_i)^2} + \frac{Y_i(0)^2(1-A_i)}{[1-e(X_i)]^2}| X_i\bigg] \bigg\}- \tau^2 \\
+&amp;= \mathbb{E}\bigg[ \frac{Y_i(1)^2}{e(X_i)} + \frac{Y_i(0)^2}{1-e(X_i)}\bigg] - \tau^2
+\end{align*}\]</span></p>
+<p><strong>Asymptotic variance of <span class="math inline">\(\hat{\Large\tau}_{OR}\)</span>:</strong></p>
+<p><span class="math display">\[\begin{align*}
+\text{Var}(f_1(X_i) - f_0(X_i)) &amp;= \mathbb{E}[f_1(X_i) - f_0(X_i)]^2 - [\mathbb{E}(f_1(X_i) - f_0(X_i))]^2\\
+&amp;=\mathbb{E}[f_1(X_i) - f_0(X_i)]^2 - \tau^2
+\end{align*}\]</span></p>
+<p><strong>Asymptotic variance of <span class="math inline">\(\hat{\Large\tau}_{DR}\)</span>:</strong></p>
+<p><span class="math display">\[\begin{align*}
+&amp;\text{Var}\bigg[ \frac{(Y_i - f_1(X_i))A_i}{e(X_i)} + f_1(X_i) -\frac{(Y_i - f_0(X_i))(1-A_i)}{1-e(X_i)} - f_0(X_i)\bigg] \\
+&amp;= \mathbb{E}\bigg[ \frac{(Y_i - f_1(X_i))A_i}{e(X_i)} + f_1(X_i) -\frac{(Y_i - f_0(X_i))(1-A_i)}{1-e(X_i)} - f_0(X_i) - \tau\bigg]^2 \\
+&amp;=\mathbb{E} \bigg\{  \bigg[\frac{(Y_i - f_1(X_i))A_i}{e(X_i)}- \frac{(Y_i - f_0(X_i))(1-A_i)}{1-e(X_i)}\bigg]^2 \\
+&amp;\,\,\,\,\,\,+ 2\bigg[\frac{(Y_i - f_1(X_i))A_i}{e(X_i)}- \frac{(Y_i - f_0(X_i))(1-A_i)}{1-e(X_i)}\bigg]\bigg[f_1(X_i) - f_0(X_i) - tau\bigg]\\
+&amp;\,\,\,\,\,\,+ \bigg[f_1(X_i) - f_0(X_i) - tau\bigg]^2 \bigg\} \\
+&amp;=\mathbb{E} \bigg\{  \bigg[\frac{(Y_i - f_1(X_i))A_i}{e(X_i)}- \frac{(Y_i - f_0(X_i))(1-A_i)}{1-e(X_i)}\bigg]^2 \\
+&amp;\,\,\,\,\,\,+ \bigg[f_1(X_i) - f_0(X_i) - tau\bigg]^2 \bigg\} \\
+&amp;= \mathbb{E}\left[\frac{\left(Y_{i}(1)-\mathbb{E}\left[Y_{i}(1) | X_{i}\right]\right)^{2}}{e\left(X_{i}\right)}+\frac{\left(Y_{i}(0)-\mathbb{E}\left[Y_{i}(0) | X_{i}\right]\right)^{2}}{1-e\left(X_{i}\right)}+\left(f_{1}\left(X_{i}\right)-f_{0}\left(X_{i}\right)-\tau\right)^{2}\right]
+\end{align*}\]</span></p>
 <p>Roses are <span class="math inline">\(\color{red}{\text{beautiful red}}\)</span>,
 violets are <span class="math inline">\(\color{blue}{\text{lovely blue}}\)</span>.</p>
 
@@ -226,8 +265,8 @@ violets are <span class="math inline">\(\color{blue}{\text{lovely blue}}\)</span
           </div>
         </div>
       </div>
-<a href="sensitivity.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="sensitivity.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="m-estimator.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -259,7 +298,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/03-models.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/04-models.Rmd",
 "text": "Edit"
 },
 "history": {
