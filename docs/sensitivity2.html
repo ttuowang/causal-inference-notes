@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 7 notes on M-estimator | Causal Inference</title>
+  <title>Chapter 6 Sensitivity Analysis II | Causal Inference</title>
   <meta name="description" content="This is the notes of Causal Inference. Most of the materials come from STAT 992 instructed by Prof. Kang and from several textbooks in causal inference" />
   <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 7 notes on M-estimator | Causal Inference" />
+  <meta property="og:title" content="Chapter 6 Sensitivity Analysis II | Causal Inference" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="ttuowang/causal-inference-notes" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 7 notes on M-estimator | Causal Inference" />
+  <meta name="twitter:title" content="Chapter 6 Sensitivity Analysis II | Causal Inference" />
   
   <meta name="twitter:description" content="This is the notes of Causal Inference. Most of the materials come from STAT 992 instructed by Prof. Kang and from several textbooks in causal inference" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="sensitivity2.html"/>
-
+<link rel="prev" href="models.html"/>
+<link rel="next" href="m-estimator.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -115,29 +115,81 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="m-estimator" class="section level1">
-<h1><span class="header-section-number">Chapter 7</span> notes on M-estimator</h1>
-<p><strong>References:</strong></p>
+<div id="sensitivity2" class="section level1">
+<h1><span class="header-section-number">Chapter 6</span> Sensitivity Analysis II</h1>
+<p><strong>Reference:</strong></p>
 <ul>
-<li><ol style="list-style-type: decimal">
-<li>Stefanski and Boos’s paper on M-estimation.</li>
-</ol></li>
-<li><ol start="2" style="list-style-type: decimal">
-<li>Chapter 5 of Asymptotic Statistics by van der Vaart.</li>
-</ol></li>
-<li><ol start="3" style="list-style-type: decimal">
-<li>Pages 29 to 32 in Semiparametric Theory and Missing Data by Tsiastis.</li>
-</ol></li>
+<li>Peng and Tyler (2014), “Generalized Cornfield conditions for the risk difference”</li>
+<li>Peng and Tyler (2016), “Sensitivity Analysis Without Assumptions”</li>
+<li>Tyler and Peng (2017), “Sensitivity Analysis in Observational Research: Introducing the E-Value”</li>
 </ul>
+<p>This chapter will cover the following topics:</p>
+<ul>
+<li>E-values</li>
+<li>Sensitivity analysis for IPW, OR and DR estimators.</li>
+</ul>
+<p>A central question in causal inference with observational studies is the sensitivity of conclusions to unmeasured confounding.</p>
+<p>First we introduce three variables to describe causal effect:</p>
+<ul>
+<li>Risk Difference = <span class="math display">\[\tau = \mathbb{E}[Y_i(1) - Y_i(0)] = \mathbb{P}(Y_i(1)=1)-\mathbb{P}(Y_i(0)=1)\]</span></li>
+<li>Relative Risk (RR) = <span class="math display">\[\frac{\mathbb{P}(Y_i(1)=1)}{\mathbb{P}(Y_i(0)=1)}\]</span> e.g. RR=3 means treatment causal increases the probability of <span class="math inline">\(Y=1\)</span> by a factor of 3</li>
+<li>Odds Ratio (OR) = <span class="math display">\[\frac{\mathbb{P}(Y_i(1)=1)}{1-\mathbb{P}(Y_i(1)=1)}\bigg/\frac{\mathbb{P}(Y_i(0)=1)}{1-\mathbb{P}(Y_i(0)=1)}\]</span> e.g. OR=3 means treatment causal increases the odss of <span class="math inline">\(Y=1\)</span> by 3 fold.</li>
+</ul>
+<p><strong>Goal:</strong> we want to assess what happens to estimators of <span class="math inline">\(tau\)</span> and RR when an observed confounder <span class="math inline">\(U\)</span> is present</p>
+<p>Review the assumptions:</p>
+<ul>
+<li>SUTUA: <span class="math inline">\(Y_i = A_iY_i(1) + (1-A_i)Y_i(0)\)</span></li>
+<li>Conditional ignorability: <span class="math inline">\(Y_i(1),Y_i(0) \perp A_i |X_i\)</span></li>
+<li><span class="math inline">\(0 &lt;&lt; P(A_i=1|X_i=x) &lt;&lt;1 \,\,\forall x\)</span></li>
+</ul>
+<p>When <span class="math inline">\(U\)</span> is present, the assumptions becomes:</p>
+<ul>
+<li>Conditional ignorability: <span class="math inline">\(Y_i(1),Y_i(0) \perp A_i |X_i, U_i\)</span></li>
+<li><span class="math inline">\(0 &lt;&lt; P(A_i=1|X_i=x, U_i=u) &lt;&lt;1 \,\,\forall x,u\)</span></li>
+</ul>
+<p><strong>Graphically:</strong></p>
+<p>Let <span class="math inline">\(RR_{AY}\)</span> be the relative risk of treatment on outcome. Let <span class="math inline">\(RR_{UA}\)</span> be the relative risk of confounder on treatment. Let <span class="math inline">\(RR_{UY}\)</span> be the relative risk of confounder on outcome. In the presence of <span class="math inline">\(U\)</span>, our estimators of <span class="math inline">\(tau\)</span> and RR are biased. We want to measure how much is this bias.</p>
+<p><strong>Define:</strong>
+<span class="math display">\[B =\frac{RR_{AU}RR_{UY}}{RR_{AU}+RR_{UY}-1}\]</span>
+<strong>Theorem:</strong>
+<span class="math display">\[RR_{AY} \geq \frac{\hat{RR}}{B}\]</span>
+Note that:</p>
+<ul>
+<li>This bound is sharp.</li>
+<li><span class="math inline">\(U\)</span> can be any type (one dimension and multi-dimension).</li>
+<li>This formula can also be applied on the lower bound of the confidence interval.</li>
+</ul>
+<p>Example: Study the causal effect of baby formula (A=1) on respiratory death (Y=1)</p>
+<ul>
+<li><span class="math inline">\(\hat{RR} = 3.9\)</span>, 95% CI:(1.8,8.7)</li>
+<li>They controlled for age, …. (Xs)</li>
+</ul>
+<p>What if there is an <span class="math inline">\(U\)</span>? How would this <span class="math inline">\(U\)</span> change the result?</p>
+<p><span class="math inline">\(\exists U\)</span> s.t. <span class="math inline">\(RR_{UA} = 2\)</span>, probability of taking infants formula increase 2 and <span class="math inline">\(RR_{UY} = 4\)</span> If <span class="math inline">\(U=1\)</span>, then baby is 4 times more likely to die than if <span class="math inline">\(U=0\)</span>. Then
+<span class="math display">\[RR_{AY} \geq \frac{3.9}{1.6} = 2.43\]</span> and <span class="math display">\[L_{AY} \geq \frac{\hat{L}_{AY}}{B} = \frac{1.8}{1.6} = 1.125\]</span></p>
+<div id="e-value" class="section level2">
+<h2><span class="header-section-number">6.1</span> E-value</h2>
+<p>Suppose <span class="math inline">\(RR_{UA} = RR_{UY}\)</span>, then <span class="math inline">\(B = \frac{RR_{UA}^2}{2RR_{UA} -1}\)</span>. Then consider the point in the lower bound where <span class="math inline">\(RR_{AY} = 1\)</span>,</p>
+<p><span class="math display">\[1 = RR_{AY} \geq \frac{\hat{RR}}{B} = \frac{\hat{RR}}{\frac{RR_{AU}^2}{2RR_{AU} -1}}\]</span>
+Solve for <span class="math inline">\(RR_{UA}\)</span>, we get the
+<span class="math display">\[\text{E-value}=\hat{RR} + \sqrt{\hat{RR}(\hat{RR}-1)}\]</span>
+Note that:</p>
+<ul>
+<li>Higher E-value means the study is more robust to unmeasured U.</li>
+</ul>
+<p><strong>Risk difference <span class="math inline">\(\tau\)</span>:</strong> Let <span class="math inline">\(\hat{\tau}\)</span> be the estimator, Y binary, <span class="math inline">\(p_1 = \mathbb{P}(Y_i = 1|A_i=1)\)</span>, <span class="math inline">\(p_0 = \mathbb{P}(Y_i = 1|A_i=0)\)</span> and <span class="math inline">\(f = P(A_i=1)\)</span>.</p>
+<p><strong>Theorem:</strong>
+<span class="math display">\[\tau_{AY} \geq (p_1 - Bp_0)\sqrt{f + \frac{1-f}{B}}\]</span></p>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="sensitivity2.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="m-estimator.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -169,7 +221,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/08-m-estimator.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/05-sensitivity-analysis-2.Rmd",
 "text": "Edit"
 },
 "history": {
