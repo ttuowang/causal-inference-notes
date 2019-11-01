@@ -24,7 +24,7 @@
 <meta name="author" content="Tuo Wang" />
 
 
-<meta name="date" content="2019-10-24" />
+<meta name="date" content="2019-11-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="models.html"/>
-<link rel="next" href="m-estimator.html"/>
+<link rel="next" href="iv.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -94,7 +94,12 @@
 <li class="chapter" data-level="6" data-path="sensitivity2.html"><a href="sensitivity2.html"><i class="fa fa-check"></i><b>6</b> Sensitivity Analysis II</a><ul>
 <li class="chapter" data-level="6.1" data-path="sensitivity2.html"><a href="sensitivity2.html#e-value"><i class="fa fa-check"></i><b>6.1</b> E-value</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="m-estimator.html"><a href="m-estimator.html"><i class="fa fa-check"></i><b>7</b> notes on M-estimator</a></li>
+<li class="chapter" data-level="7" data-path="iv.html"><a href="iv.html"><i class="fa fa-check"></i><b>7</b> Instrumental Variable</a><ul>
+<li class="chapter" data-level="7.1" data-path="iv.html"><a href="iv.html#iv-without-covariates-x"><i class="fa fa-check"></i><b>7.1</b> IV without covariates X</a></li>
+<li class="chapter" data-level="7.2" data-path="iv.html"><a href="iv.html#iv-with-covariates-x"><i class="fa fa-check"></i><b>7.2</b> IV with covariates X</a></li>
+<li class="chapter" data-level="7.3" data-path="iv.html"><a href="iv.html#new-topics-in-i.v."><i class="fa fa-check"></i><b>7.3</b> New topics in I.V.</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="m-estimator.html"><a href="m-estimator.html"><i class="fa fa-check"></i><b>8</b> notes on M-estimator</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -176,6 +181,8 @@ Solve for <span class="math inline">\(RR_{UA}\)</span>, we get the
 Note that:</p>
 <ul>
 <li>Higher E-value means the study is more robust to unmeasured U.</li>
+<li>E-calue is the minimum strength of assoication on the risk ratio scale, that an unmeasured confounder would need to have with both the treatment and outcome, conditional on the measured covariates, to explain away a treatment-outcome association.</li>
+<li>E-value is a continuous measure of an association’s robustness to potential uncontrolled condounders. The lowerst possible E-value is 1 (that is, no unmeasured confounding is needed to explain away the observed association). The higher the E-value, the stronger the confounder associations must be to explain away the effect.i</li>
 </ul>
 <p><strong>Risk difference <span class="math inline">\(\tau\)</span>:</strong> Let <span class="math inline">\(\hat{\tau}\)</span> be the estimator, Y binary, <span class="math inline">\(p_1 = \mathbb{P}(Y_i = 1|A_i=1)\)</span>, <span class="math inline">\(p_0 = \mathbb{P}(Y_i = 1|A_i=0)\)</span> and <span class="math inline">\(f = P(A_i=1)\)</span>.</p>
 <p><strong>Theorem:</strong>
@@ -189,7 +196,7 @@ Note that:</p>
         </div>
       </div>
 <a href="models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="m-estimator.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="iv.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

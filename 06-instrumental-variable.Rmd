@@ -1,0 +1,185 @@
+# Instrumental Variable {#iv}
+
+## IV without covariates X
+
+**Goal**: Estimate the causal effect of $A$ on $Y$, especially when:
+
+- A is "hopelessly" confounded
+- A can never be randomized
+
+**Idea**: Use "external" random variation in the data to "extract" randomness out of confounded A
+
+**Controversy**: It's "impossible" to find such Z.
+
+**Set up:** 
+
+- $Z \in {0,1}$, Instrumental Variable
+- $A \in {0,1}$, Treatment
+- $Y \in \mathbb{R}$, Outcome
+
+**Potential Outcome:**
+
+- $A_i^{(Z=1)}$: potential treatment when $Z=1$
+- $A_i^{(Z=0)}$: potential treatment when $Z=0$
+- $Y_i^{(Z=1, A=1)}$,$Y_i^{(Z=0, A=1)}$,$Y_i^{(Z=1, A=0)}$,$Y_i^{(Z=0, A=0)}$
+- $Y_i^{(z, a)}$ is the potential outcome if unit $i$ received $z$ and $a$
+
+**Assumptions:**
+
+- *A1*: SUTVA 
+$$A_i = Z_iA_i(1) + (1-Z_i)A_i(0)$$
+$$Y_i = Z_iY_i^{(1, A_i(1))} + (1-Z_i)Y_i^{(0, A_i(0))}$$
+- *A2*: $Z \perp Y^{(z,a)}, A^{(z)}$, I.V. is randomized
+- *A3*: $0 < \mathbb{P}(Z_i = 1) <1$
+- *A4*: $\mathbb{E}[A(1) - A(0)] \neq 0$, I.V.(Z) has casual effect on A
+- *A5*: $Y_i^{(Z=1, a)}=Y_i^{(Z=0, a)} = Y_i^{(a)}$
+- *A6*: $A^{(1)} \geq A^{(0)}$, monotoncity
+
+Notes on the assumptions:
+
+- If Z was completely randomized like in a RCT, A1-A3 are plausible.
+- A4 can be checked from data if Z was randomized
+- A5 can never be fully verified with data!! We can observe $Y_i^{(1,a)}$,$Y_i^{(0,a)}$ at the same time.
+- A6 means one-sided complicance exists in the experiment design. One-sided complicance: $A_i(0) = 0$, i.e $A_i(0) = 1$ will never happen.
+
+
+Accoding to this paper, Angrist, Imbens and Rubin (1996) "Identification of Causal Effects Using Instrumental Variables", we can divide the subjects into four categories:
+
+- *G1*: $A_i(1) =1,A_i(0) =1$: Always takers (doesn't exist for one-sided compliance)
+- *G2*: $A_i(1) =0,A_i(0) =0$: Never takers
+- *G3*: $A_i(1) =1,A_i(0) =0$: Compliers
+- *G4*: $A_i(1) =0,A_i(0) =1$: Defiers
+
+*G1-4* partitions the population in a non-overlapping manner. If monotonicity holds, then defiers cannot exists.
+
+**Theorem:** If A1-A6 held, then 
+\begin{align*}\mathbb{E}[Y_i(1) - Y_i(0) | \,i\text{ is complier }] &= \mathbb{E}[Y_i(1) - Y_i(0) | A_i(1)=1, A_i(0)=1] \\
+&= \frac{\mathbb{E}(Y_i | Z_i=1)-\mathbb{E}(Y_i | Z_i=0)}{\mathbb{E}(A_i | Z_i=1)- \mathbb{E}(A_i | Z_i=0)}
+\end{align*}
+
+Note that the estimand identifies the ATE, but among a group of people (compliers) and we don't know who they are!
+
+**proof:**
+
+First, let us look at the numerator.
+
+\begin{align*}
+&\,\,\,\,\,\,\,\,E(Y_i |Z_i=1) - E(Y_i|Z_i=0) \\
+&=^{A_1} E(Z_iY_i^{(1,A_i(1))}+(1-Z_i)Y_i^{(0,A_i(0))} |Z_i=1  )-\\
+&\,\,\,\,\,\,\,\,E(Z_iY_i^{(1,A_i(1))}+(1-Z_i)Y_i^{(0,A_i(0))} |Z_i=0  ) \\
+&= E(Y_i^{(1, A_i(1))}|Z_i=1) - E(Y_i^{(0, A_i(0))}|Z_i=0) \\
+&=^{A_2} E(Y_i^{(1, A_i(1))}) - E(Y_i^{(0, A_i(0))}) \\
+&= E[ (Y_i^{(1, A_i(1))}) - E(Y_i^{(0, A_i(0))})I(A_i(1)=1,A_i(0)=0)+\\
+&\,\,\,\,\,\,\,(Y_i^{(1, A_i(1))}) - E(Y_i^{(0, A_i(0))})I(A_i(1)=1,A_i(0)=1)+\\
+&\,\,\,\,\,\,\,(Y_i^{(1, A_i(1))}) - E(Y_i^{(0, A_i(0))})I(A_i(1)=0,A_i(0)=0)]\\
+& = E[ (Y_i^{(1, A_i(1))}) - E(Y_i^{(0, A_i(0))})I(A_i(1)=1,A_i(0)=0) ] \\
+& = E[ (Y_i^{(1)}) - E(Y_i^{(0)})I(A_i(1)=1,A_i(0)=0) ]
+\end{align*}
+
+Then, we look at the denominator.
+\begin{align*}
+&\,\,\,\,\,\,\,\,E[A_i |Z_i=1] - E[A_i|Z_i=0]\\
+&= E[Z_iA_i(1)+(1-Z_i)A_i(0)|Z_i=1] -\\
+&\,\,\,\,\,\,\,\,E[Z_iA_i(1)+(1-Z_i)A_i(0)|Z_i=0]\\
+&= E[A_i(1) |Z_i=1] - E[A_i(0)|Z_i=0]\\
+&= E[A_i(1) ] - E[A_i(0)] \\
+&= E[A_i(1)  - A_i(0)]
+\end{align*}
+
+Thus,
+\begin{align*}
+&\,\,\,\,\,\,\,\,E[Y_i(1) - Y_i(0) | A_i(1)=1, A_i(0)=1] \\
+&= \frac{E[(Y_i(1) - Y_i(0))I(A_i(1)=1, A_i(0)=1)]}{E[I(A_i(1)=1, A_i(0)=1)]} \\
+&= \frac{E[(Y_i(1) - Y_i(0))I(A_i(1)=1, A_i(0)=1)]}{E[A_i(1) - A_i(0)]}
+\end{align*}
+
+**How to estmate?**
+
+**First method:**We can use the sample mean to estimate the terms in the theorem, i.e.
+$$\hat E(Y_i |Z_i=1) = \frac{\sum_{i=1}^{n}Y_iZ_i}{\sum_{i=1}^{n}Z_i} $$
+
+**Theorem: ** $\hat E(Y_i |Z_i=1) \overset{p}{\to} E(Y_i |Z_i=1)$
+
+**proof:** 
+
+$$\frac{1}{n}\sum_{i=1}^{n}Y_iZ_i \overset{p}{\to} E[Y_iZ_i]$$
+$$\frac{1}{n}\sum_{i=1}^{n}Z_i \overset{p}{\to} E[Z_i]$$
+Thus, by using Slutsky's theorem:
+
+$$\frac{\sum_{i=1}^{n}Y_iZ_i}{\sum_{i=1}^{n}Z_i} \overset{p}{\to} \frac{E[Y_iZ_i]}{E[Z_i]} = E[Y_i|Z_i=1]$$
+
+**Theorem:** 
+
+$$\hat{\tau}_w = \frac{\hat{E}_{YZ}-\hat{E}_{Y(1-Z)}}{\hat{E}_{AZ}-\hat{E}_{A(1-Z)}} \overset{p}{\to} \tau = \frac{{E}_{YZ}-{E}_{Y(1-Z)}}{{E}_{AZ}-{E}_{A(1-Z)}}$$
+and
+
+$$\sqrt{\hat{\tau}_w - \tau} \to N(0, E\bigg[ \frac{\frac{Y_i(1)^2}{p}+\frac{Y_i(0)^2}{1-p}}{\tau_A^2} \bigg] - \tau^2),$$
+where $p = \mathbb{P}(Z_i=1)$ and $\tau_A = E[A_i |Z_i=1]-E[A_i |Z_i=0]$
+
+**Second method:** Two Stage Least Square
+
+```{r, eval=FALSE}
+lm.fit1 <- lm(A~Z)
+Ahat <- predict(lm.fit1)
+lm.fit2 <- lm(Y~Ahat)
+tau_tsls <- coef(lm.fit2)[2]
+```
+
+**Theorem:** If $Z$ is binary, then $\hat{\tau}_{TSLS} = \hat{\tau}_w$
+
+## IV with covariates X
+
+**Assumptions:**
+
+- *A1*: SUTVA 
+$$A_i = Z_iA_i(1) + (1-Z_i)A_i(0)$$
+$$Y_i = Z_iY_i^{(1, A_i(1))} + (1-Z_i)Y_i^{(0, A_i(0))}$$
+- *A2*: $Z_i \perp A_i(1),A_i(0), Y_i^{(1, A_i(1))},Y_i^{(0, A_i(0))} | X_i$
+- *A3*: $0 < \mathbb{P}(Z_i = 1 |X_i=x) <1\,\,\forall x$
+- *A4*: $\mathbb{E}[A(1) - A(0)|X_i=x] \neq 0\,\,\forall x$
+- *A5*: $Y_i^{(Z=1, a)}=Y_i^{(Z=0, a)} = Y_i^{(a)}$
+- *A6*: $A^{(1)} \geq A^{(0)}$, monotoncity
+
+**Theorem:** Under assumptions *A1-A6*, The ATE among compliers:
+
+$${E}[Y_i(1) - Y_i(0) | A_i(1)=1, A_i(0)=1]=\frac{E_X\{E[Y_i|Z_i=1,X_i]-E[Y_i|Z_i=0,X_i]\}}{E_X\{E[A_i|Z_i=1,X_i]-E[A_i|Z_i=0,X_i]\}}$$
+
+**Strategy of estimating with Xs:**
+
+**1:Two stage least square**
+
+```{r, eval=FALSE}
+lm.fit1 <- lm(A~Z+X)
+Ahat <- predict(lm.fit1)
+lm.fit2 <- lm(Y~Ahat+X)
+tau_tsls <- coef(lm.fit2)
+```
+
+**Property of $\hat \tau_{TSLS}$**
+
+- $\hat \tau_{TSLS}\to\tau$
+- $\sqrt{n}(\hat \tau_{TSLS}-\tau) \to N(0, V_{TSLS})$
+
+**2:Matching (non-parametric)**
+
+```{r, eval=FALSE}
+lm.fit1 <- lm(Y~Z + matched set indicators)
+lm.fit2 <- lm(Y~Z + matched set indicators)
+```
+
+Take the ratio of the coef estimate between $Y\sim Z+.$ and $A\sim Z+.$
+
+**Property of $\hat \tau_{match}$**
+
+- $\hat \tau_{match}\to\tau$
+- $\sqrt{n}(\hat \tau_{match}-\tau) \to N(0, V_{match})$
+- $V_{match} \geq V_{TSLS}$
+
+**3:IPW OR DR**
+
+## New topics in I.V.
+
+- Multiple IVs 
+- Privacy and IV
+
+

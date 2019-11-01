@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 Instrumental Variable | Causal Inference</title>
+  <meta name="description" content="This is the notes of Causal Inference. Most of the materials come from STAT 992 instructed by Prof. Kang and from several textbooks in causal inference" />
+  <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 Instrumental Variable | Causal Inference" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is the notes of Causal Inference. Most of the materials come from STAT 992 instructed by Prof. Kang and from several textbooks in causal inference" />
+  <meta name="github-repo" content="ttuowang/causal-inference-notes" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Instrumental Variable | Causal Inference" />
+  
+  <meta name="twitter:description" content="This is the notes of Causal Inference. Most of the materials come from STAT 992 instructed by Prof. Kang and from several textbooks in causal inference" />
+  
+
+<meta name="author" content="Tuo Wang" />
+
+
+<meta name="date" content="2019-11-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="sensitivity2.html"/>
+<link rel="next" href="m-estimator.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Causal Inference</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
+<li class="chapter" data-level="2" data-path="basic.html"><a href="basic.html"><i class="fa fa-check"></i><b>2</b> Propensity score</a></li>
+<li class="chapter" data-level="3" data-path="matching.html"><a href="matching.html"><i class="fa fa-check"></i><b>3</b> Matching</a><ul>
+<li class="chapter" data-level="3.1" data-path="matching.html"><a href="matching.html#what-is-matching"><i class="fa fa-check"></i><b>3.1</b> What is matching?</a></li>
+<li class="chapter" data-level="3.2" data-path="matching.html"><a href="matching.html#exact-matching"><i class="fa fa-check"></i><b>3.2</b> Exact Matching</a></li>
+<li class="chapter" data-level="3.3" data-path="matching.html"><a href="matching.html#propensity-score-matching"><i class="fa fa-check"></i><b>3.3</b> Propensity Score Matching</a></li>
+<li class="chapter" data-level="3.4" data-path="matching.html"><a href="matching.html#multivariate-caliper-matching"><i class="fa fa-check"></i><b>3.4</b> Multivariate Caliper Matching</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="matching.html"><a href="matching.html#a-mahalanobis-distances"><i class="fa fa-check"></i><b>3.4.1</b> (a) Mahalanobis Distances</a></li>
+<li class="chapter" data-level="3.4.2" data-path="matching.html"><a href="matching.html#b-penalize-large-distance"><i class="fa fa-check"></i><b>3.4.2</b> (b) Penalize large distance</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="matching.html"><a href="matching.html#matching-with-multiple-controls"><i class="fa fa-check"></i><b>3.5</b> Matching with Multiple controls</a></li>
+<li class="chapter" data-level="3.6" data-path="matching.html"><a href="matching.html#full-matching"><i class="fa fa-check"></i><b>3.6</b> Full Matching</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="sensitivity1.html"><a href="sensitivity1.html"><i class="fa fa-check"></i><b>4</b> Sensitivity Analysis I</a><ul>
+<li class="chapter" data-level="4.1" data-path="sensitivity1.html"><a href="sensitivity1.html#sensitivity-analysis-for-matched-sets-with-binary-outcomes"><i class="fa fa-check"></i><b>4.1</b> Sensitivity Analysis for Matched Sets with Binary Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>5</b> causal Inference with Models</a><ul>
+<li class="chapter" data-level="5.1" data-path="models.html"><a href="models.html#ipw-estimator"><i class="fa fa-check"></i><b>5.1</b> IPW estimator</a></li>
+<li class="chapter" data-level="5.2" data-path="models.html"><a href="models.html#outcome-regression"><i class="fa fa-check"></i><b>5.2</b> Outcome Regression</a></li>
+<li class="chapter" data-level="5.3" data-path="models.html"><a href="models.html#doubly-robust-estimator"><i class="fa fa-check"></i><b>5.3</b> Doubly robust estimator</a></li>
+<li class="chapter" data-level="5.4" data-path="models.html"><a href="models.html#asymptotic-variance"><i class="fa fa-check"></i><b>5.4</b> Asymptotic variance</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="sensitivity2.html"><a href="sensitivity2.html"><i class="fa fa-check"></i><b>6</b> Sensitivity Analysis II</a><ul>
+<li class="chapter" data-level="6.1" data-path="sensitivity2.html"><a href="sensitivity2.html#e-value"><i class="fa fa-check"></i><b>6.1</b> E-value</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="iv.html"><a href="iv.html"><i class="fa fa-check"></i><b>7</b> Instrumental Variable</a><ul>
+<li class="chapter" data-level="7.1" data-path="iv.html"><a href="iv.html#iv-without-covariates-x"><i class="fa fa-check"></i><b>7.1</b> IV without covariates X</a></li>
+<li class="chapter" data-level="7.2" data-path="iv.html"><a href="iv.html#iv-with-covariates-x"><i class="fa fa-check"></i><b>7.2</b> IV with covariates X</a></li>
+<li class="chapter" data-level="7.3" data-path="iv.html"><a href="iv.html#new-topics-in-i.v."><i class="fa fa-check"></i><b>7.3</b> New topics in I.V.</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="m-estimator.html"><a href="m-estimator.html"><i class="fa fa-check"></i><b>8</b> notes on M-estimator</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Causal Inference</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="iv" class="section level1">
+<h1><span class="header-section-number">Chapter 7</span> Instrumental Variable</h1>
+<div id="iv-without-covariates-x" class="section level2">
+<h2><span class="header-section-number">7.1</span> IV without covariates X</h2>
+<p><strong>Goal</strong>: Estimate the causal effect of <span class="math inline">\(A\)</span> on <span class="math inline">\(Y\)</span>, especially when:</p>
+<ul>
+<li>A is “hopelessly” confounded</li>
+<li>A can never be randomized</li>
+</ul>
+<p><strong>Idea</strong>: Use “external” random variation in the data to “extract” randomness out of confounded A</p>
+<p><strong>Controversy</strong>: It’s “impossible” to find such Z.</p>
+<p><strong>Set up:</strong></p>
+<ul>
+<li><span class="math inline">\(Z \in {0,1}\)</span>, Instrumental Variable</li>
+<li><span class="math inline">\(A \in {0,1}\)</span>, Treatment</li>
+<li><span class="math inline">\(Y \in \mathbb{R}\)</span>, Outcome</li>
+</ul>
+<p><strong>Potential Outcome:</strong></p>
+<ul>
+<li><span class="math inline">\(A_i^{(Z=1)}\)</span>: potential treatment when <span class="math inline">\(Z=1\)</span></li>
+<li><span class="math inline">\(A_i^{(Z=0)}\)</span>: potential treatment when <span class="math inline">\(Z=0\)</span></li>
+<li><span class="math inline">\(Y_i^{(Z=1, A=1)}\)</span>,<span class="math inline">\(Y_i^{(Z=0, A=1)}\)</span>,<span class="math inline">\(Y_i^{(Z=1, A=0)}\)</span>,<span class="math inline">\(Y_i^{(Z=0, A=0)}\)</span></li>
+<li><span class="math inline">\(Y_i^{(z, a)}\)</span> is the potential outcome if unit <span class="math inline">\(i\)</span> received <span class="math inline">\(z\)</span> and <span class="math inline">\(a\)</span></li>
+</ul>
+<p><strong>Assumptions:</strong></p>
+<ul>
+<li><em>A1</em>: SUTVA
+<span class="math display">\[A_i = Z_iA_i(1) + (1-Z_i)A_i(0)\]</span>
+<span class="math display">\[Y_i = Z_iY_i^{(1, A_i(1))} + (1-Z_i)Y_i^{(0, A_i(0))}\]</span></li>
+<li><em>A2</em>: <span class="math inline">\(Z \perp Y^{(z,a)}, A^{(z)}\)</span>, I.V. is randomized</li>
+<li><em>A3</em>: <span class="math inline">\(0 &lt; \mathbb{P}(Z_i = 1) &lt;1\)</span></li>
+<li><em>A4</em>: <span class="math inline">\(\mathbb{E}[A(1) - A(0)] \neq 0\)</span>, I.V.(Z) has casual effect on A</li>
+<li><em>A5</em>: <span class="math inline">\(Y_i^{(Z=1, a)}=Y_i^{(Z=0, a)} = Y_i^{(a)}\)</span></li>
+<li><em>A6</em>: <span class="math inline">\(A^{(1)} \geq A^{(0)}\)</span>, monotoncity</li>
+</ul>
+<p>Notes on the assumptions:</p>
+<ul>
+<li>If Z was completely randomized like in a RCT, A1-A3 are plausible.</li>
+<li>A4 can be checked from data if Z was randomized</li>
+<li>A5 can never be fully verified with data!! We can observe <span class="math inline">\(Y_i^{(1,a)}\)</span>,<span class="math inline">\(Y_i^{(0,a)}\)</span> at the same time.</li>
+<li>A6 means one-sided complicance exists in the experiment design. One-sided complicance: <span class="math inline">\(A_i(0) = 0\)</span>, i.e <span class="math inline">\(A_i(0) = 1\)</span> will never happen.</li>
+</ul>
+<p>Accoding to this paper, Angrist, Imbens and Rubin (1996) “Identification of Causal Effects Using Instrumental Variables”, we can divide the subjects into four categories:</p>
+<ul>
+<li><em>G1</em>: <span class="math inline">\(A_i(1) =1,A_i(0) =1\)</span>: Always takers (doesn’t exist for one-sided compliance)</li>
+<li><em>G2</em>: <span class="math inline">\(A_i(1) =0,A_i(0) =0\)</span>: Never takers</li>
+<li><em>G3</em>: <span class="math inline">\(A_i(1) =1,A_i(0) =0\)</span>: Compliers</li>
+<li><em>G4</em>: <span class="math inline">\(A_i(1) =0,A_i(0) =1\)</span>: Defiers</li>
+</ul>
+<p><em>G1-4</em> partitions the population in a non-overlapping manner. If monotonicity holds, then defiers cannot exists.</p>
+<p><strong>Theorem:</strong> If A1-A6 held, then
+<span class="math display">\[\begin{align*}\mathbb{E}[Y_i(1) - Y_i(0) | \,i\text{ is complier }] &amp;= \mathbb{E}[Y_i(1) - Y_i(0) | A_i(1)=1, A_i(0)=1] \\
+&amp;= \frac{\mathbb{E}(Y_i | Z_i=1)-\mathbb{E}(Y_i | Z_i=0)}{\mathbb{E}(A_i | Z_i=1)- \mathbb{E}(A_i | Z_i=0)}
+\end{align*}\]</span></p>
+<p>Note that the estimand identifies the ATE, but among a group of people (compliers) and we don’t know who they are!</p>
+<p><strong>proof:</strong></p>
+<p>First, let us look at the numerator.</p>
+<p><span class="math display">\[\begin{align*}
+&amp;\,\,\,\,\,\,\,\,E(Y_i |Z_i=1) - E(Y_i|Z_i=0) \\
+&amp;=^{A_1} E(Z_iY_i^{(1,A_i(1))}+(1-Z_i)Y_i^{(0,A_i(0))} |Z_i=1  )-\\
+&amp;\,\,\,\,\,\,\,\,E(Z_iY_i^{(1,A_i(1))}+(1-Z_i)Y_i^{(0,A_i(0))} |Z_i=0  ) \\
+&amp;= E(Y_i^{(1, A_i(1))}|Z_i=1) - E(Y_i^{(0, A_i(0))}|Z_i=0) \\
+&amp;=^{A_2} E(Y_i^{(1, A_i(1))}) - E(Y_i^{(0, A_i(0))}) \\
+&amp;= E[ (Y_i^{(1, A_i(1))}) - E(Y_i^{(0, A_i(0))})I(A_i(1)=1,A_i(0)=0)+\\
+&amp;\,\,\,\,\,\,\,(Y_i^{(1, A_i(1))}) - E(Y_i^{(0, A_i(0))})I(A_i(1)=1,A_i(0)=1)+\\
+&amp;\,\,\,\,\,\,\,(Y_i^{(1, A_i(1))}) - E(Y_i^{(0, A_i(0))})I(A_i(1)=0,A_i(0)=0)]\\
+&amp; = E[ (Y_i^{(1, A_i(1))}) - E(Y_i^{(0, A_i(0))})I(A_i(1)=1,A_i(0)=0) ] \\
+&amp; = E[ (Y_i^{(1)}) - E(Y_i^{(0)})I(A_i(1)=1,A_i(0)=0) ]
+\end{align*}\]</span></p>
+<p>Then, we look at the denominator.
+<span class="math display">\[\begin{align*}
+&amp;\,\,\,\,\,\,\,\,E[A_i |Z_i=1] - E[A_i|Z_i=0]\\
+&amp;= E[Z_iA_i(1)+(1-Z_i)A_i(0)|Z_i=1] -\\
+&amp;\,\,\,\,\,\,\,\,E[Z_iA_i(1)+(1-Z_i)A_i(0)|Z_i=0]\\
+&amp;= E[A_i(1) |Z_i=1] - E[A_i(0)|Z_i=0]\\
+&amp;= E[A_i(1) ] - E[A_i(0)] \\
+&amp;= E[A_i(1)  - A_i(0)]
+\end{align*}\]</span></p>
+<p>Thus,
+<span class="math display">\[\begin{align*}
+&amp;\,\,\,\,\,\,\,\,E[Y_i(1) - Y_i(0) | A_i(1)=1, A_i(0)=1] \\
+&amp;= \frac{E[(Y_i(1) - Y_i(0))I(A_i(1)=1, A_i(0)=1)]}{E[I(A_i(1)=1, A_i(0)=1)]} \\
+&amp;= \frac{E[(Y_i(1) - Y_i(0))I(A_i(1)=1, A_i(0)=1)]}{E[A_i(1) - A_i(0)]}
+\end{align*}\]</span></p>
+<p><strong>How to estmate?</strong></p>
+<p><strong>First method:</strong>We can use the sample mean to estimate the terms in the theorem, i.e.
+<span class="math display">\[\hat E(Y_i |Z_i=1) = \frac{\sum_{i=1}^{n}Y_iZ_i}{\sum_{i=1}^{n}Z_i} \]</span></p>
+<p><strong>Theorem: </strong> <span class="math inline">\(\hat E(Y_i |Z_i=1) \overset{p}{\to} E(Y_i |Z_i=1)\)</span></p>
+<p><strong>proof:</strong></p>
+<p><span class="math display">\[\frac{1}{n}\sum_{i=1}^{n}Y_iZ_i \overset{p}{\to} E[Y_iZ_i]\]</span>
+<span class="math display">\[\frac{1}{n}\sum_{i=1}^{n}Z_i \overset{p}{\to} E[Z_i]\]</span>
+Thus, by using Slutsky’s theorem:</p>
+<p><span class="math display">\[\frac{\sum_{i=1}^{n}Y_iZ_i}{\sum_{i=1}^{n}Z_i} \overset{p}{\to} \frac{E[Y_iZ_i]}{E[Z_i]} = E[Y_i|Z_i=1]\]</span></p>
+<p><strong>Theorem:</strong></p>
+<p><span class="math display">\[\hat{\tau}_w = \frac{\hat{E}_{YZ}-\hat{E}_{Y(1-Z)}}{\hat{E}_{AZ}-\hat{E}_{A(1-Z)}} \overset{p}{\to} \tau = \frac{{E}_{YZ}-{E}_{Y(1-Z)}}{{E}_{AZ}-{E}_{A(1-Z)}}\]</span>
+and</p>
+<p><span class="math display">\[\sqrt{\hat{\tau}_w - \tau} \to N(0, E\bigg[ \frac{\frac{Y_i(1)^2}{p}+\frac{Y_i(0)^2}{1-p}}{\tau_A^2} \bigg] - \tau^2),\]</span>
+where <span class="math inline">\(p = \mathbb{P}(Z_i=1)\)</span> and <span class="math inline">\(\tau_A = E[A_i |Z_i=1]-E[A_i |Z_i=0]\)</span></p>
+<p><strong>Second method:</strong> Two Stage Least Square</p>
+<p><strong>Theorem:</strong> If <span class="math inline">\(Z\)</span> is binary, then <span class="math inline">\(\hat{\tau}_{TSLS} = \hat{\tau}_w\)</span></p>
+</div>
+<div id="iv-with-covariates-x" class="section level2">
+<h2><span class="header-section-number">7.2</span> IV with covariates X</h2>
+<p><strong>Assumptions:</strong></p>
+<ul>
+<li><em>A1</em>: SUTVA
+<span class="math display">\[A_i = Z_iA_i(1) + (1-Z_i)A_i(0)\]</span>
+<span class="math display">\[Y_i = Z_iY_i^{(1, A_i(1))} + (1-Z_i)Y_i^{(0, A_i(0))}\]</span></li>
+<li><em>A2</em>: <span class="math inline">\(Z_i \perp A_i(1),A_i(0), Y_i^{(1, A_i(1))},Y_i^{(0, A_i(0))} | X_i\)</span></li>
+<li><em>A3</em>: <span class="math inline">\(0 &lt; \mathbb{P}(Z_i = 1 |X_i=x) &lt;1\,\,\forall x\)</span></li>
+<li><em>A4</em>: <span class="math inline">\(\mathbb{E}[A(1) - A(0)|X_i=x] \neq 0\,\,\forall x\)</span></li>
+<li><em>A5</em>: <span class="math inline">\(Y_i^{(Z=1, a)}=Y_i^{(Z=0, a)} = Y_i^{(a)}\)</span></li>
+<li><em>A6</em>: <span class="math inline">\(A^{(1)} \geq A^{(0)}\)</span>, monotoncity</li>
+</ul>
+<p><strong>Theorem:</strong> Under assumptions <em>A1-A6</em>, The ATE among compliers:</p>
+<p><span class="math display">\[{E}[Y_i(1) - Y_i(0) | A_i(1)=1, A_i(0)=1]=\frac{E_X\{E[Y_i|Z_i=1,X_i]-E[Y_i|Z_i=0,X_i]\}}{E_X\{E[A_i|Z_i=1,X_i]-E[A_i|Z_i=0,X_i]\}}\]</span></p>
+<p><strong>Strategy of estimating with Xs:</strong></p>
+<p><strong>1:Two stage least square</strong></p>
+<p><strong>Property of <span class="math inline">\(\hat \tau_{TSLS}\)</span></strong></p>
+<ul>
+<li><span class="math inline">\(\hat \tau_{TSLS}\to\tau\)</span></li>
+<li><span class="math inline">\(\sqrt{n}(\hat \tau_{TSLS}-\tau) \to N(0, V_{TSLS})\)</span></li>
+</ul>
+<p><strong>2:Matching (non-parametric)</strong></p>
+<p>Take the ratio of the coef estimate between <span class="math inline">\(Y\sim Z+.\)</span> and <span class="math inline">\(A\sim Z+.\)</span></p>
+<p><strong>Property of <span class="math inline">\(\hat \tau_{match}\)</span></strong></p>
+<ul>
+<li><span class="math inline">\(\hat \tau_{match}\to\tau\)</span></li>
+<li><span class="math inline">\(\sqrt{n}(\hat \tau_{match}-\tau) \to N(0, V_{match})\)</span></li>
+<li><span class="math inline">\(V_{match} \geq V_{TSLS}\)</span></li>
+</ul>
+<p><strong>3:IPW OR DR</strong></p>
+</div>
+<div id="new-topics-in-i.v." class="section level2">
+<h2><span class="header-section-number">7.3</span> New topics in I.V.</h2>
+<ul>
+<li>Multiple IVs</li>
+<li>Privacy and IV</li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="sensitivity2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="m-estimator.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/06-instrumental-variable.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["causual-inference-notes.pdf", "causual-inference-notes.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

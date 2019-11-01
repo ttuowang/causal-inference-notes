@@ -66,6 +66,8 @@ $$\text{E-value}=\hat{RR} + \sqrt{\hat{RR}(\hat{RR}-1)}$$
 Note that:
 
 - Higher E-value means the study is more robust to unmeasured U.
+- E-calue is the minimum strength of assoication on the risk ratio scale, that an unmeasured confounder would need to have with both the treatment and outcome, conditional on the measured covariates, to explain away a treatment-outcome association.
+- E-value is a continuous measure of an association's robustness to potential uncontrolled condounders. The lowerst possible E-value is 1 (that is, no unmeasured confounding is needed to explain away the observed association). The higher the E-value, the stronger the confounder associations must be to explain away the effect.i
 
 **Risk difference $\tau$:** Let $\hat{\tau}$ be the estimator, Y binary, $p_1 = \mathbb{P}(Y_i = 1|A_i=1)$, $p_0 = \mathbb{P}(Y_i = 1|A_i=0)$ and $f = P(A_i=1)$.
 
