@@ -43,7 +43,7 @@ Cons:
 **Quick Review on Propensity Score:**
 Propensity score is the conditional probability of exposure to treatment given the observed covariates, $e(\mathbf{x}) = \mathbb{Pr}(A = 1|\mathbf{x})$, where $\mathbf{x}$ is the covaraites and $A$ is the intervention variable. The propensity score is unkown, but it can be estimated from the data. For example, we can use the logistic regression:
 
-$$\log\{\frac{e(\mathbf{x_i})}{1 - e(\mathbf{x_i})}\} = \beta_0 + \mathbf{x_i}^T\bf{\beta}$$
+$$\log\{\frac{e(\mathbf{x_i})}{1 - e(\mathbf{x_i})}\} = \beta_0 + \mathbf{x_i}^T\mathbf{\beta}$$
 
 **Idea:** Pair people with similar $e(X)$. We know $X \perp A | e(X)$.
 
@@ -74,7 +74,7 @@ A simple alternative to the Mahalanobis distance is the 'rank-based Mahalanobis 
 
 The idea is that two individuals can be close on the propensity score to a degree, once this degree is achieved, covariates $\mathbf{x}$ may affect the distance. Define $w$ as the caliper width. With $w$, if two individuals have propensity scores that differ more than $w$, we will add a penalty to the ahalanobis distance between subject $i$ and $j$. Explicitly,
 
-$$  d_{new}(\mathbf{x_i}, \mathbf{x_j})= 
+$$d_{new}(\mathbf{x_i}, \mathbf{x_j})= 
 \begin{cases}
     d(\mathbf{x_i}, \mathbf{x_j}) + p\times \big|\text{logit}(e(\mathbf{x_i}))-\text{logit}(e(\mathbf{x_j}))\big|,& \text{if } \big|\text{logit}(e(\mathbf{x_i}))-\text{logit}(e(\mathbf{x_j}))\big| \geq w\\
     d(\mathbf{x_i}, \mathbf{x_j}),              & \text{if } \big|\text{logit}(e(\mathbf{x_i}))-\text{logit}(e(\mathbf{x_j}))\big| < w

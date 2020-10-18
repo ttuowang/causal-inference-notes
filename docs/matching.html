@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Matching | Causal Inference</title>
+  <title>Chapter 2 Matching | Causal Inference</title>
   <meta name="description" content="This is the notes of Causal Inference. Most of the materials come from STAT 992 instructed by Prof. Kang and from several textbooks in causal inference" />
-  <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Matching | Causal Inference" />
+  <meta property="og:title" content="Chapter 2 Matching | Causal Inference" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="ttuowang/causal-inference-notes" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Matching | Causal Inference" />
+  <meta name="twitter:title" content="Chapter 2 Matching | Causal Inference" />
   
   <meta name="twitter:description" content="This is the notes of Causal Inference. Most of the materials come from STAT 992 instructed by Prof. Kang and from several textbooks in causal inference" />
   
@@ -24,7 +24,7 @@
 <meta name="author" content="Tuo Wang" />
 
 
-<meta name="date" content="2019-11-01" />
+<meta name="date" content="2020-10-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,6 +50,7 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 
@@ -69,37 +70,37 @@
 <li><a href="./">Causal Inference</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
-<li class="chapter" data-level="2" data-path="basic.html"><a href="basic.html"><i class="fa fa-check"></i><b>2</b> Propensity score</a></li>
-<li class="chapter" data-level="3" data-path="matching.html"><a href="matching.html"><i class="fa fa-check"></i><b>3</b> Matching</a><ul>
-<li class="chapter" data-level="3.1" data-path="matching.html"><a href="matching.html#what-is-matching"><i class="fa fa-check"></i><b>3.1</b> What is matching?</a></li>
-<li class="chapter" data-level="3.2" data-path="matching.html"><a href="matching.html#exact-matching"><i class="fa fa-check"></i><b>3.2</b> Exact Matching</a></li>
-<li class="chapter" data-level="3.3" data-path="matching.html"><a href="matching.html#propensity-score-matching"><i class="fa fa-check"></i><b>3.3</b> Propensity Score Matching</a></li>
-<li class="chapter" data-level="3.4" data-path="matching.html"><a href="matching.html#multivariate-caliper-matching"><i class="fa fa-check"></i><b>3.4</b> Multivariate Caliper Matching</a><ul>
-<li class="chapter" data-level="3.4.1" data-path="matching.html"><a href="matching.html#a-mahalanobis-distances"><i class="fa fa-check"></i><b>3.4.1</b> (a) Mahalanobis Distances</a></li>
-<li class="chapter" data-level="3.4.2" data-path="matching.html"><a href="matching.html#b-penalize-large-distance"><i class="fa fa-check"></i><b>3.4.2</b> (b) Penalize large distance</a></li>
+<li class="part"><span><b>I Introduction</b></span></li>
+<li class="chapter" data-level="1" data-path="basic.html"><a href="basic.html"><i class="fa fa-check"></i><b>1</b> Propensity score</a></li>
+<li class="chapter" data-level="2" data-path="matching.html"><a href="matching.html"><i class="fa fa-check"></i><b>2</b> Matching</a><ul>
+<li class="chapter" data-level="2.1" data-path="matching.html"><a href="matching.html#what-is-matching"><i class="fa fa-check"></i><b>2.1</b> What is matching?</a></li>
+<li class="chapter" data-level="2.2" data-path="matching.html"><a href="matching.html#exact-matching"><i class="fa fa-check"></i><b>2.2</b> Exact Matching</a></li>
+<li class="chapter" data-level="2.3" data-path="matching.html"><a href="matching.html#propensity-score-matching"><i class="fa fa-check"></i><b>2.3</b> Propensity Score Matching</a></li>
+<li class="chapter" data-level="2.4" data-path="matching.html"><a href="matching.html#multivariate-caliper-matching"><i class="fa fa-check"></i><b>2.4</b> Multivariate Caliper Matching</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="matching.html"><a href="matching.html#a-mahalanobis-distances"><i class="fa fa-check"></i><b>2.4.1</b> (a) Mahalanobis Distances</a></li>
+<li class="chapter" data-level="2.4.2" data-path="matching.html"><a href="matching.html#b-penalize-large-distance"><i class="fa fa-check"></i><b>2.4.2</b> (b) Penalize large distance</a></li>
 </ul></li>
-<li class="chapter" data-level="3.5" data-path="matching.html"><a href="matching.html#matching-with-multiple-controls"><i class="fa fa-check"></i><b>3.5</b> Matching with Multiple controls</a></li>
-<li class="chapter" data-level="3.6" data-path="matching.html"><a href="matching.html#full-matching"><i class="fa fa-check"></i><b>3.6</b> Full Matching</a></li>
+<li class="chapter" data-level="2.5" data-path="matching.html"><a href="matching.html#matching-with-multiple-controls"><i class="fa fa-check"></i><b>2.5</b> Matching with Multiple controls</a></li>
+<li class="chapter" data-level="2.6" data-path="matching.html"><a href="matching.html#full-matching"><i class="fa fa-check"></i><b>2.6</b> Full Matching</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="sensitivity1.html"><a href="sensitivity1.html"><i class="fa fa-check"></i><b>4</b> Sensitivity Analysis I</a><ul>
-<li class="chapter" data-level="4.1" data-path="sensitivity1.html"><a href="sensitivity1.html#sensitivity-analysis-for-matched-sets-with-binary-outcomes"><i class="fa fa-check"></i><b>4.1</b> Sensitivity Analysis for Matched Sets with Binary Outcomes</a></li>
+<li class="chapter" data-level="3" data-path="sensitivity1.html"><a href="sensitivity1.html"><i class="fa fa-check"></i><b>3</b> Sensitivity Analysis I</a><ul>
+<li class="chapter" data-level="3.1" data-path="sensitivity1.html"><a href="sensitivity1.html#sensitivity-analysis-for-matched-sets-with-binary-outcomes"><i class="fa fa-check"></i><b>3.1</b> Sensitivity Analysis for Matched Sets with Binary Outcomes</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>5</b> causal Inference with Models</a><ul>
-<li class="chapter" data-level="5.1" data-path="models.html"><a href="models.html#ipw-estimator"><i class="fa fa-check"></i><b>5.1</b> IPW estimator</a></li>
-<li class="chapter" data-level="5.2" data-path="models.html"><a href="models.html#outcome-regression"><i class="fa fa-check"></i><b>5.2</b> Outcome Regression</a></li>
-<li class="chapter" data-level="5.3" data-path="models.html"><a href="models.html#doubly-robust-estimator"><i class="fa fa-check"></i><b>5.3</b> Doubly robust estimator</a></li>
-<li class="chapter" data-level="5.4" data-path="models.html"><a href="models.html#asymptotic-variance"><i class="fa fa-check"></i><b>5.4</b> Asymptotic variance</a></li>
+<li class="chapter" data-level="4" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>4</b> causal Inference with Models</a><ul>
+<li class="chapter" data-level="4.1" data-path="models.html"><a href="models.html#ipw-estimator"><i class="fa fa-check"></i><b>4.1</b> IPW estimator</a></li>
+<li class="chapter" data-level="4.2" data-path="models.html"><a href="models.html#outcome-regression"><i class="fa fa-check"></i><b>4.2</b> Outcome Regression</a></li>
+<li class="chapter" data-level="4.3" data-path="models.html"><a href="models.html#doubly-robust-estimator"><i class="fa fa-check"></i><b>4.3</b> Doubly robust estimator</a></li>
+<li class="chapter" data-level="4.4" data-path="models.html"><a href="models.html#asymptotic-variance"><i class="fa fa-check"></i><b>4.4</b> Asymptotic variance</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="sensitivity2.html"><a href="sensitivity2.html"><i class="fa fa-check"></i><b>6</b> Sensitivity Analysis II</a><ul>
-<li class="chapter" data-level="6.1" data-path="sensitivity2.html"><a href="sensitivity2.html#e-value"><i class="fa fa-check"></i><b>6.1</b> E-value</a></li>
+<li class="chapter" data-level="5" data-path="sensitivity2.html"><a href="sensitivity2.html"><i class="fa fa-check"></i><b>5</b> Sensitivity Analysis II</a><ul>
+<li class="chapter" data-level="5.1" data-path="sensitivity2.html"><a href="sensitivity2.html#e-value"><i class="fa fa-check"></i><b>5.1</b> E-value</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="iv.html"><a href="iv.html"><i class="fa fa-check"></i><b>7</b> Instrumental Variable</a><ul>
-<li class="chapter" data-level="7.1" data-path="iv.html"><a href="iv.html#iv-without-covariates-x"><i class="fa fa-check"></i><b>7.1</b> IV without covariates X</a></li>
-<li class="chapter" data-level="7.2" data-path="iv.html"><a href="iv.html#iv-with-covariates-x"><i class="fa fa-check"></i><b>7.2</b> IV with covariates X</a></li>
-<li class="chapter" data-level="7.3" data-path="iv.html"><a href="iv.html#new-topics-in-i.v."><i class="fa fa-check"></i><b>7.3</b> New topics in I.V.</a></li>
+<li class="chapter" data-level="6" data-path="iv.html"><a href="iv.html"><i class="fa fa-check"></i><b>6</b> Instrumental Variable</a><ul>
+<li class="chapter" data-level="6.1" data-path="iv.html"><a href="iv.html#iv-without-covariates-x"><i class="fa fa-check"></i><b>6.1</b> IV without covariates X</a></li>
+<li class="chapter" data-level="6.2" data-path="iv.html"><a href="iv.html#iv-with-covariates-x"><i class="fa fa-check"></i><b>6.2</b> IV with covariates X</a></li>
+<li class="chapter" data-level="6.3" data-path="iv.html"><a href="iv.html#new-topics-in-i.v."><i class="fa fa-check"></i><b>6.3</b> New topics in I.V.</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="m-estimator.html"><a href="m-estimator.html"><i class="fa fa-check"></i><b>8</b> notes on M-estimator</a></li>
+<li class="chapter" data-level="7" data-path="m-estimator.html"><a href="m-estimator.html"><i class="fa fa-check"></i><b>7</b> notes on M-estimator</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -121,7 +122,7 @@
 
             <section class="normal" id="section-">
 <div id="matching" class="section level1">
-<h1><span class="header-section-number">Chapter 3</span> Matching</h1>
+<h1><span class="header-section-number">Chapter 2</span> Matching</h1>
 <p>This lecture note will cover the following topics:</p>
 <ul>
 <li>Exact Matching</li>
@@ -131,7 +132,7 @@
 <li>Full Matching</li>
 </ul>
 <div id="what-is-matching" class="section level2">
-<h2><span class="header-section-number">3.1</span> What is matching?</h2>
+<h2><span class="header-section-number">2.1</span> What is matching?</h2>
 <p>In observational study, absent random assignment, treated and control individuals may differ in terms of covariates, so direct comparison of the outcomes of treated individuals and controls may compare individuals who are not comparable - that is, a direct comparison may be biased as an estimate of the effect caused by the treatment.</p>
 <p>Pros:</p>
 <ul>
@@ -146,24 +147,24 @@
 </ul>
 </div>
 <div id="exact-matching" class="section level2">
-<h2><span class="header-section-number">3.2</span> Exact Matching</h2>
+<h2><span class="header-section-number">2.2</span> Exact Matching</h2>
 <p><strong>Idea:</strong> Pair people with identical <span class="math inline">\(X\)</span>s</p>
 </div>
 <div id="propensity-score-matching" class="section level2">
-<h2><span class="header-section-number">3.3</span> Propensity Score Matching</h2>
+<h2><span class="header-section-number">2.3</span> Propensity Score Matching</h2>
 <p><strong>Quick Review on Propensity Score:</strong>
 Propensity score is the conditional probability of exposure to treatment given the observed covariates, <span class="math inline">\(e(\mathbf{x}) = \mathbb{Pr}(A = 1|\mathbf{x})\)</span>, where <span class="math inline">\(\mathbf{x}\)</span> is the covaraites and <span class="math inline">\(A\)</span> is the intervention variable. The propensity score is unkown, but it can be estimated from the data. For example, we can use the logistic regression:</p>
-<p><span class="math display">\[\log\{\frac{e(\mathbf{x_i})}{1 - e(\mathbf{x_i})}\} = \beta_0 + \mathbf{x_i}^T\bf{\beta}\]</span></p>
+<p><span class="math display">\[\log\{\frac{e(\mathbf{x_i})}{1 - e(\mathbf{x_i})}\} = \beta_0 + \mathbf{x_i}^T\mathbf{\beta}\]</span></p>
 <p><strong>Idea:</strong> Pair people with similar <span class="math inline">\(e(X)\)</span>. We know <span class="math inline">\(X \perp A | e(X)\)</span>.</p>
 <p>Calculate the propensity score for all subjects. Define the distance between subject i in the treatment group and subject j in the control group as:</p>
 <p><span class="math display">\[d(\mathbf{x_i}, \mathbf{x_j}) = \big|\text{logit}(e(\mathbf{x_i})) - \text{logit}(e(\mathbf{x_i}))\big|\]</span></p>
 </div>
 <div id="multivariate-caliper-matching" class="section level2">
-<h2><span class="header-section-number">3.4</span> Multivariate Caliper Matching</h2>
+<h2><span class="header-section-number">2.4</span> Multivariate Caliper Matching</h2>
 <p><strong>Why we need multivariate caliper matching?</strong></p>
 <p>In lecture 6, we learned matching with propensity score, which tends to balance all of the covariates used to build that score, but two individuals with the same propensity score may differ in important ways. Also, propensity score matching is a single covariate matching, which ignore the interaction between different covarites.</p>
 <div id="a-mahalanobis-distances" class="section level3">
-<h3><span class="header-section-number">3.4.1</span> (a) Mahalanobis Distances</h3>
+<h3><span class="header-section-number">2.4.1</span> (a) Mahalanobis Distances</h3>
 <p>Let <span class="math inline">\(\mathbf{x}\)</span> be the covariates random vector. Let <span class="math inline">\(\hat{\Sigma}\)</span> be the sample covariance matrix of <span class="math inline">\(\mathbf{x}\)</span>. Then the estimated Mahalanobis distance between subject <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>, who has covarates <span class="math inline">\(\mathbf{x_i}\)</span> and <span class="math inline">\(\mathbf{x_j}\)</span> repectively, is defined as:</p>
 <p><span class="math display">\[d(\mathbf{x_i}, \mathbf{x_j}) = (\mathbf{x_i} - \mathbf{x_j})^T\hat{\Sigma}^{-1}(\mathbf{x_i} - \mathbf{x_j})\]</span></p>
 <p>See the following comments on Mahalanobis distance from Rosenbaum’s book, Design of Observational Studies:</p>
@@ -173,9 +174,9 @@ Propensity score is the conditional probability of exposure to treatment given t
 <p>A simple alternative to the Mahalanobis distance is the ‘rank-based Mahalanobis distance’ which replaces each of the covariates by its ranks. Check out Design of Observational Studies, Chapter 8.3 for details.</p>
 </div>
 <div id="b-penalize-large-distance" class="section level3">
-<h3><span class="header-section-number">3.4.2</span> (b) Penalize large distance</h3>
+<h3><span class="header-section-number">2.4.2</span> (b) Penalize large distance</h3>
 <p>The idea is that two individuals can be close on the propensity score to a degree, once this degree is achieved, covariates <span class="math inline">\(\mathbf{x}\)</span> may affect the distance. Define <span class="math inline">\(w\)</span> as the caliper width. With <span class="math inline">\(w\)</span>, if two individuals have propensity scores that differ more than <span class="math inline">\(w\)</span>, we will add a penalty to the ahalanobis distance between subject <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>. Explicitly,</p>
-<p><span class="math display">\[  d_{new}(\mathbf{x_i}, \mathbf{x_j})= 
+<p><span class="math display">\[d_{new}(\mathbf{x_i}, \mathbf{x_j})= 
 \begin{cases}
     d(\mathbf{x_i}, \mathbf{x_j}) + p\times \big|\text{logit}(e(\mathbf{x_i}))-\text{logit}(e(\mathbf{x_j}))\big|,&amp; \text{if } \big|\text{logit}(e(\mathbf{x_i}))-\text{logit}(e(\mathbf{x_j}))\big| \geq w\\
     d(\mathbf{x_i}, \mathbf{x_j}),              &amp; \text{if } \big|\text{logit}(e(\mathbf{x_i}))-\text{logit}(e(\mathbf{x_j}))\big| &lt; w
@@ -190,7 +191,7 @@ Propensity score is the conditional probability of exposure to treatment given t
 </div>
 </div>
 <div id="matching-with-multiple-controls" class="section level2">
-<h2><span class="header-section-number">3.5</span> Matching with Multiple controls</h2>
+<h2><span class="header-section-number">2.5</span> Matching with Multiple controls</h2>
 <p>In previous matching algorithms, we only match one treatment with one control. In matching with multiple controls, each treatment is matched to at least one control. For example if we match 1 treatment with 2 controls, assume we have 10 subjects in treatment group, we will end up with 10 matched sets, which each contains 1 treatment and 2 controls. Note that the 20 controls included in matched sets need to be different.</p>
 <p><strong>How many controls?</strong></p>
 <p>Let <span class="math inline">\(m\)</span> be the number of controls to be matched for one treatment. In <a href="https://www.annualreviews.org/doi/abs/10.1146/annurev-statistics-031219-041058">Paul Rosenbaum’s 2019 review on matching</a>:</p>
@@ -205,7 +206,7 @@ Propensity score is the conditional probability of exposure to treatment given t
 </ul>
 </div>
 <div id="full-matching" class="section level2">
-<h2><span class="header-section-number">3.6</span> Full Matching</h2>
+<h2><span class="header-section-number">2.6</span> Full Matching</h2>
 <p>In full matching, we can accept one treated matched with multiple controls and many treated matched with one control.</p>
 <p><strong>Assessing Balance from Full Matching:</strong> Before-matching standardized difference calculation is the same as before. For after matching, we use a weighted harmonic mean. Specifically, let <span class="math inline">\(s = 1, \cdots, S\)</span> denote the <span class="math inline">\(S\)</span> matched sets. For each covariate X, the standarized difference after matching is computed as:</p>
 <p><span class="math display">\[\Delta_{X}=\frac{\frac{\sum_{s=1}^{s} w_{s}\left(\bar{X}_{s, A=1}-\tilde{X}_{s, A=0}\right)}{\sum_{s=1}^{s} w_{s}}}{\text { SE from before matching }}, \quad w_{s}=\frac{1}{\frac{1}{\text { Number of treated in } s}+\frac{1}{\text { Number of Controls in } s}}\]</span></p>
@@ -238,12 +239,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -255,6 +255,10 @@ gitbook.start({
 "text": "Edit"
 },
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },

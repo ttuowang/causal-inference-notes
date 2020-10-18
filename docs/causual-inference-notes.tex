@@ -1,0 +1,987 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{book}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Causal Inference},
+  pdfauthor={Tuo Wang},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{booktabs}
+\usepackage{amsthm}
+\makeatletter
+\def\thm@space@setup{%
+  \thm@preskip=8pt plus 2pt minus 4pt
+  \thm@postskip=\thm@preskip
+}
+\makeatother
+\usepackage[]{natbib}
+\bibliographystyle{apalike}
+
+\title{Causal Inference}
+\author{Tuo Wang}
+\date{2020-10-18}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{1}
+\tableofcontents
+}
+\hypertarget{part-introduction}{%
+\part{Introduction}\label{part-introduction}}
+
+This is the notes of Causal Inference. Most of the materials come from STAT 992 in UW-Madison instructed by Prof.~Kang and from several textbooks in causal inference.
+
+Recommended textbook:
+
+\begin{itemize}
+\item
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \tightlist
+  \item
+    Paul Rosenbaum. ``Design of OBservational Studies'' (2010)
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \setcounter{enumi}{1}
+  \tightlist
+  \item
+    Miguel Hernan \& James Robins. ``Causal Inference'' (2019)
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \setcounter{enumi}{2}
+  \tightlist
+  \item
+    Guido Imbens and Don Rubin. ``Causal Inference for Statistics, Social, and Biomedical Sciences'' (2015)
+  \end{enumerate}
+\end{itemize}
+
+\hypertarget{basic}{%
+\chapter{Propensity score}\label{basic}}
+
+\hypertarget{matching}{%
+\chapter{Matching}\label{matching}}
+
+This lecture note will cover the following topics:
+
+\begin{itemize}
+\tightlist
+\item
+  Exact Matching
+\item
+  Propensity Score Matching
+\item
+  Multivariate Caliper Matching
+\item
+  Matching with Multiple Controls
+\item
+  Full Matching
+\end{itemize}
+
+\hypertarget{what-is-matching}{%
+\section{What is matching?}\label{what-is-matching}}
+
+In observational study, absent random assignment, treated and control individuals may differ in terms of covariates, so direct comparison of the outcomes of treated individuals and controls may compare individuals who are not comparable - that is, a direct comparison may be biased as an estimate of the effect caused by the treatment.
+
+Pros:
+
+\begin{itemize}
+\tightlist
+\item
+  Simple and intuitive
+\item
+  Blinding to outcome info
+\item
+  Diagnostic for overlap is easy
+\end{itemize}
+
+Cons:
+
+\begin{itemize}
+\tightlist
+\item
+  Theory is difficult
+\item
+  It requires a lot of practice.
+\end{itemize}
+
+\hypertarget{exact-matching}{%
+\section{Exact Matching}\label{exact-matching}}
+
+\textbf{Idea:} Pair people with identical \(X\)s
+
+\hypertarget{propensity-score-matching}{%
+\section{Propensity Score Matching}\label{propensity-score-matching}}
+
+\textbf{Quick Review on Propensity Score:}
+Propensity score is the conditional probability of exposure to treatment given the observed covariates, \(e(\mathbf{x}) = \mathbb{Pr}(A = 1|\mathbf{x})\), where \(\mathbf{x}\) is the covaraites and \(A\) is the intervention variable. The propensity score is unkown, but it can be estimated from the data. For example, we can use the logistic regression:
+
+\[\log\{\frac{e(\mathbf{x_i})}{1 - e(\mathbf{x_i})}\} = \beta_0 + \mathbf{x_i}^T\mathbf{\beta}\]
+
+\textbf{Idea:} Pair people with similar \(e(X)\). We know \(X \perp A | e(X)\).
+
+Calculate the propensity score for all subjects. Define the distance between subject i in the treatment group and subject j in the control group as:
+
+\[d(\mathbf{x_i}, \mathbf{x_j}) = \big|\text{logit}(e(\mathbf{x_i})) - \text{logit}(e(\mathbf{x_i}))\big|\]
+
+\hypertarget{multivariate-caliper-matching}{%
+\section{Multivariate Caliper Matching}\label{multivariate-caliper-matching}}
+
+\textbf{Why we need multivariate caliper matching?}
+
+In lecture 6, we learned matching with propensity score, which tends to balance all of the covariates used to build that score, but two individuals with the same propensity score may differ in important ways. Also, propensity score matching is a single covariate matching, which ignore the interaction between different covarites.
+
+\hypertarget{a-mahalanobis-distances}{%
+\subsection{(a) Mahalanobis Distances}\label{a-mahalanobis-distances}}
+
+Let \(\mathbf{x}\) be the covariates random vector. Let \(\hat{\Sigma}\) be the sample covariance matrix of \(\mathbf{x}\). Then the estimated Mahalanobis distance between subject \(i\) and \(j\), who has covarates \(\mathbf{x_i}\) and \(\mathbf{x_j}\) repectively, is defined as:
+
+\[d(\mathbf{x_i}, \mathbf{x_j}) = (\mathbf{x_i} - \mathbf{x_j})^T\hat{\Sigma}^{-1}(\mathbf{x_i} - \mathbf{x_j})\]
+
+See the following comments on Mahalanobis distance from Rosenbaum's book, Design of Observational Studies:
+
+\begin{quote}
+``The Mahalanobis distance was originally developed for use with multivariate Nomal data, and for data of that type it works fine. With data that are not Normal, the Mahalanobis distance can exhibit some rather odd behavior. If one covariate contains extreme outliers of has a long-tailed distribution, its standard deviation will be inflated, and the Mahalanobis distance will tend to ignore that covariate in matching.''
+\end{quote}
+
+A simple alternative to the Mahalanobis distance is the `rank-based Mahalanobis distance' which replaces each of the covariates by its ranks. Check out Design of Observational Studies, Chapter 8.3 for details.
+
+\hypertarget{b-penalize-large-distance}{%
+\subsection{(b) Penalize large distance}\label{b-penalize-large-distance}}
+
+The idea is that two individuals can be close on the propensity score to a degree, once this degree is achieved, covariates \(\mathbf{x}\) may affect the distance. Define \(w\) as the caliper width. With \(w\), if two individuals have propensity scores that differ more than \(w\), we will add a penalty to the ahalanobis distance between subject \(i\) and \(j\). Explicitly,
+
+\[d_{new}(\mathbf{x_i}, \mathbf{x_j})= 
+\begin{cases}
+    d(\mathbf{x_i}, \mathbf{x_j}) + p\times \big|\text{logit}(e(\mathbf{x_i}))-\text{logit}(e(\mathbf{x_j}))\big|,& \text{if } \big|\text{logit}(e(\mathbf{x_i}))-\text{logit}(e(\mathbf{x_j}))\big| \geq w\\
+    d(\mathbf{x_i}, \mathbf{x_j}),              & \text{if } \big|\text{logit}(e(\mathbf{x_i}))-\text{logit}(e(\mathbf{x_j}))\big| < w
+\end{cases}\]
+
+where \(e(\mathbf{x})\) is the propensity score of covariates \(\mathbf{x}\), \(d(\mathbf{x_i}, \mathbf{x_j})\) is the Mahalanobis distance between individual \(i\) and \(j\) and \(p\) is the penalty term.
+
+In practical, we may want to care about the following things:
+
+\textbf{What's the value of \(p\)?}
+
+Usually \(p = 1000\). In \href{https://www.annualreviews.org/doi/abs/10.1146/annurev-statistics-031219-041058}{Paul Rosenbaum's 2019 review on matching}: he used \(d_{new}(\mathbf{x_i}, \mathbf{x_j}) = +\infty\) when \(\big|\text{logit}(e(\mathbf{x_i}))-\text{logit}(e(\mathbf{x_j}))\big| \geq w\).
+
+\textbf{What's the value of \(w\)?}
+
+People use \(w = 0.5 \times SD(\text{logit}(e(\mathbf{x})))\) or \(w = 0.2 \times SD(\text{logit}(e(\mathbf{x})))\) in practice.
+
+\textbf{Comments:} Use of the Mahalanobis distance inside propensity score calipers will balance covariates and also pair similar individuals. Also, using both Mahalanobis distance and propensity score calipers adds a protection against the failure of a single matching technique.
+
+\hypertarget{matching-with-multiple-controls}{%
+\section{Matching with Multiple controls}\label{matching-with-multiple-controls}}
+
+In previous matching algorithms, we only match one treatment with one control. In matching with multiple controls, each treatment is matched to at least one control. For example if we match 1 treatment with 2 controls, assume we have 10 subjects in treatment group, we will end up with 10 matched sets, which each contains 1 treatment and 2 controls. Note that the 20 controls included in matched sets need to be different.
+
+\textbf{How many controls?}
+
+Let \(m\) be the number of controls to be matched for one treatment. In \href{https://www.annualreviews.org/doi/abs/10.1146/annurev-statistics-031219-041058}{Paul Rosenbaum's 2019 review on matching}:
+
+\begin{quote}
+``Under a simple, familiar, conventional Gaussian model for matched sets, the variance of the estimator is proportional to 1+1/m, where the omitted constant of proportionality does not depend on m, but depends on all sorts of other things: the sample size, the variance of errors, and so on (see, for instance, Rosenbaum 2010, section 8.7)''
+\end{quote}
+
+For example, \(m=1\) means paired matching, then \(1+\frac{1}{m} = 2\). If \(m = +\infty\), then \(1+\frac{1}{m} = 1\). Based on Rosenbaum's comment, \(1+\frac{1}{m}\) represents the variability. By adding controls from 1 to \(+\infty\), the sampling uncertainty from controls reduces but the uncertainty from treatment is unchanged. For example when \(m=10\), \(1+\frac{1}{m} = 1.1\) so almost all the uncertainty come from treatment group. In practice, \(m = 3 \sim 5\).
+
+\textbf{Pros and cons:}
+
+\begin{itemize}
+\tightlist
+\item
+  Pros: Efficiency. More samples are included inside matched sets.
+\item
+  Cons: Balance becomes terrible.
+\end{itemize}
+
+\hypertarget{full-matching}{%
+\section{Full Matching}\label{full-matching}}
+
+In full matching, we can accept one treated matched with multiple controls and many treated matched with one control.
+
+\textbf{Assessing Balance from Full Matching:} Before-matching standardized difference calculation is the same as before. For after matching, we use a weighted harmonic mean. Specifically, let \(s = 1, \cdots, S\) denote the \(S\) matched sets. For each covariate X, the standarized difference after matching is computed as:
+
+\[\Delta_{X}=\frac{\frac{\sum_{s=1}^{s} w_{s}\left(\bar{X}_{s, A=1}-\tilde{X}_{s, A=0}\right)}{\sum_{s=1}^{s} w_{s}}}{\text { SE from before matching }}, \quad w_{s}=\frac{1}{\frac{1}{\text { Number of treated in } s}+\frac{1}{\text { Number of Controls in } s}}\]
+
+A matched pair has weight \(w_s = 1\), so this generalization makes sense.
+
+\hypertarget{sensitivity1}{%
+\chapter{Sensitivity Analysis I}\label{sensitivity1}}
+
+This chapter will cover the following topics:
+
+Sensitivity analysis is designed to answer what does an unmeasurable variable do in terms of impacting our causal condlusions about A and Y.
+
+\hypertarget{sensitivity-analysis-for-matched-sets-with-binary-outcomes}{%
+\section{Sensitivity Analysis for Matched Sets with Binary Outcomes}\label{sensitivity-analysis-for-matched-sets-with-binary-outcomes}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Matched set id & subject & covariate\tabularnewline
+\midrule
+\endhead
+Matched set 1 & Bob-Scott & \(X_{Bob} \approx X_{Scott}\)\tabularnewline
+Matched set 2 & Jenn-Kathleen & \(X_{Jenn} \approx X_{Kathleen}\)\tabularnewline
+\(\vdots\) & \(\vdots\) & \(\vdots\)\tabularnewline
+Matched set I & &\tabularnewline
+\bottomrule
+\end{longtable}
+
+By ignorability assumption, \(Y_{i}(1), Y_{i}(0), X_{i} \perp A_{i}\), either one of the pair is equally likely to get treatment. Formally:
+\begin{align*}
+p_1 &= \text{Prob that Bob Smokes and Scott doesn't} \\
+1 - p_1 &= \text{Prob that Scott Smokes and Bob doesn't}
+\end{align*}
+Under assumption: \(p_1 = \frac{1}{2}\). More generally, \(p_s = \frac{1}{2}, \forall s=1,\cdots,I\). Suppose Bob is more like to smoke than Scott because he carries gene and \(p_1\) could range between certain values, say:
+
+\[\frac{1}{1+\Gamma} \leq p_1 \leq \frac{\Gamma}{1+\Gamma}, \,\, \Gamma \geq 1\]
+For example, \(\Gamma=1 \implies p_1 =\frac{1}{2}\), \(\Gamma=3 \implies 0.25 \leq p_1 \leq 0.75\).
+
+\(\Gamma\) is the sensitivity parameters. \(\Gamma = 1 \implies\) random experiment given \(X\). \(\Gamma > 1 \implies\) non-random experiment of A due to uncertain variable U.
+
+Rewrite we can get,
+
+\[\frac{1}{\Gamma} \leq \frac{p_1}{1-p_1} \leq \Gamma,\]
+where \(\frac{p_1}{1-p_1}\) is the odds ratio of Bob smoking versus Scott smoking.
+
+Conside \(H_0: Y_i{(1)} = Y_i{(0)}\,\,\forall i\)
+
+\[\hat{ATE} = \frac{1}{I} \sum_{s=1}^{I} \delta_s,\]
+
+where \(\delta_s\) is the difference in outcome between treated and control in matched set \(s\). We can use \(\hat{ATE}\) to test \(H_0\). For simplicity, \(T= \frac{1}{I} \sum_{s=1}^{I} \delta_s\). Under \(H_0\):
+
+\begin{align*}
+Y_{Bob}(1) &=  Y_{Bob}(0)\\
+Y_{Scott}(1) &= Y_{Scott}(0)
+\end{align*}
+
+Thus,
+\begin{align*}
+\delta_1 &= 
+\begin{cases}
+    Y_{Bob}(1) - Y_{Scott}(0),& p_1\\
+    Y_{Scott}(1) - Y_{Bob}(0),& 1 - p_1
+\end{cases} \\
+&= 
+\begin{cases}
+    Y_{Bob}(0) - Y_{Scott}(0),& p_1\\
+    Y_{Scott}(0) - Y_{Bob}(0),& 1 - p_1
+\end{cases}
+\end{align*}
+\(\delta_1\) only changes in sign denpending on who gets treated. Thus,
+
+\[\delta_1 = Q_1 \times |Y_{Bob}(0) - Y_{Scott}(0)|,\]
+where \(Q_1 = \begin{cases}  1,& p_1\\  -1,& 1 - p_1 \end{cases}\)
+
+Thus under \(H_0\),
+
+\[T = \sum_{s=1}^{I} \delta_s = \sum_{s=1}^{I}Q_sC_s = \sum_{s:C_s\neq0}Q_s,\]
+where \(Q_s = \begin{cases}  1,& p_1\\  -1,& 1 - p_1 \end{cases}\) and \(C_s = 1\) or \(0\) in binary outcome
+
+We can add a term transform the term in the summation. That is \(Q_s = -1\) or \(1\), we can do a easy linear transformation to let term equal \(0\) and \(1\).
+
+Let \(d = \sum_{s=1}^{I} \mathbb{I}(C_s \neq 0)\). Then,
+\[\frac{T+d}{2} = \sum_{s:C_s\neq0}\frac{Q_s+1}{2} \sim Bin(d, \frac{1}{2})\]
+\(\frac{T+d}{2}\) follows a binomial distribuiton with \(n=d\) and \(p=\frac{1}{2}\).Thus the p-value = \(\mathbb{P}(Bin(d,\frac{1}{2}) > \frac{T_{obs} + d}{2})\)(Note that d is a constant once given observations).
+
+Now suupose \(p_1 \neq \frac{1}{2}\) e.g.~\(p_1 > \frac{1}{2}\) (Bob is more likely to smoke than scott). Instead we can assume \(p_1\) is in a certain range i.e.~\(\frac{1}{1+\Gamma} \leq p_1 \leq \frac{\Gamma}{1+\Gamma}\).
+
+\textbf{What is the new p-value if \(\Gamma > 1\)?} We may not be able to find the exact p-value but we can find the range of the p-value, i.e.~we can find the upper and lower bound of the p-value.
+
+\[\mathbb{P}(Bin(d, \frac{1}{1+\Gamma}) > \frac{T_{obs}+d}{2}) \leq \mathbb{P}(\frac{T+d}{2} > \frac{T_{obs}+d}{2}) \leq \mathbb{P}(Bin(d, \frac{\Gamma}{1+\Gamma}) > \frac{T_{obs}+d}{2})\]
+
+\textbf{How to choose the value of \(\Gamma\):}
+
+\begin{itemize}
+\item
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \tightlist
+  \item
+    Compute the range of p-values for each \(\Gamma\), e.g \(\Gamma = 1,2,\cdots\)
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \setcounter{enumi}{1}
+  \tightlist
+  \item
+    Stop if the range of p-value contains \(\alpha = 0.05\)
+  \end{enumerate}
+\end{itemize}
+
+\hypertarget{models}{%
+\chapter{causal Inference with Models}\label{models}}
+
+Throughout this chapter, we have the following set up :
+
+\begin{itemize}
+\tightlist
+\item
+  \(Y_i\), \(A_i\), \(X_i\) i.i.d \(\sim\) \(F\)
+\end{itemize}
+
+and assumptions:
+
+\begin{itemize}
+\item
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \tightlist
+  \item
+    \(Y_{i}(1)A_i + Y_{i}(0)(1-A_i) = Y_i\)
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \setcounter{enumi}{1}
+  \tightlist
+  \item
+    \(Y_{i}(1),Y_{i}(0) \perp A_i | X_i\)
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \setcounter{enumi}{2}
+  \tightlist
+  \item
+    \(0 < \mathbb{P}(A_i = 1 | X_i) < 1\)
+  \end{enumerate}
+\end{itemize}
+
+\textbf{Goal:} Estimate \(\tau = \mathbb{E}[Y_i(1) - Y_i(0)]\)
+
+We introduce four methods:
+
+\begin{itemize}
+\tightlist
+\item
+  IPW: Inverse probability weighting
+\item
+  Outcome Regression /G-formula
+\item
+  Double Robust estimation
+\item
+  Machine learning
+\end{itemize}
+
+\textbf{Under assumption 1-3:}
+
+\[\tau = \mathbb{E} \bigg[\frac{Y_iA_i}{e(X_i)} - \frac{Y_i(1-A_i)}{1-e(X_i)}\bigg]\,\,\,\,\,\,(\text{inverse probability weighting})\]
+
+\[\tau = \mathbb{E}_X \big\{ \mathbb{E} \big[ Y_i|A_i=1,X_i\big] - \mathbb{E} 
+\big[ Y_i|A_i=0,X_i\big]\big\} = \mathbb{E}_X\big[f_1(X_i) - f_0(X_i)\big]
+\,\,\,\,\,\,(\text{Outcome regression})\]
+
+\textbf{Prove:} \(\mathbb{E}[Y_i(1)] = \mathbb{E}[\frac{Y_iA_i}{e(X_i)}]\) and \(\mathbb{E}[Y_i(0)] = \mathbb{E}[\frac{Y_i(1-A_i)}{1-e(X_i)}]\)
+
+\textbf{proof :}
+
+By assumption 3, \(\mathbb{E}\big[\frac{Y_iA_i}{e(X_i)}\big]\) is well defined. Thus,
+
+\begin{align*}
+\mathbb{E}\big[\frac{Y_iA_i}{e(X_i)}\big] &=\mathbb{E}_X \big\{
+\mathbb{E}\big[\frac{Y_iA_i}{e(X_i)} | X_i\big] \big\} \\
+&= \mathbb{E}_X \big\{ \frac{1}{e(X_i)} \mathbb{E} \big[ Y_iA_i | X_i\big] \big\} \\
+&= \mathbb{E}_X \big\{ \frac{1}{e(X_i)} \mathbb{E} \big[ (Y_{i}(1)A_i + Y_{i}(0)(1-A_i))A_i | X_i\big] \big\} \\
+&= \mathbb{E}_X \big\{ \frac{1}{e(X_i)} \mathbb{E} \big[ Y_i(1)A_i | X_i\big] \big\} \\
+&= \mathbb{E}_X \big\{ \frac{1}{e(X_i)} \mathbb{E} \big[ Y_i(1) | X_i\big] \mathbb{E} \big[ A_i | X_i\big] \big\} \\
+&= \mathbb{E}_X \big\{ \mathbb{E} \big[ Y_i(1) | X_i\big] \big\} \\
+&= \mathbb{E}[Y_i(1)]
+\end{align*}
+
+We can prove \(\mathbb{E}[Y_i(0)] = \mathbb{E}[\frac{Y_i(1-A_i)}{1-e(X_i)}]\) by using the same procedure.
+
+\textbf{Prove:} \(\mathbb{E}[Y_i(1)]=\mathbb{E}_X\{ \mathbb{E}[Y_i | A_i=1, X_i] \}\) and \(\mathbb{E}[Y_i(0)]=\mathbb{E}_X\{ \mathbb{E}[Y_i | A_i=0, X_i] \}\)
+
+\textbf{proof:}
+\begin{align*}
+\mathbb{E}_X\{ \mathbb{E}[Y_i | A_i=1, X_i] \} &= \mathbb{E}_X\{ \mathbb{E}[Y_{i}(1)A_i + Y_{i}(0)(1-A_i) | A_i=1, X_i] \} \\
+&= \mathbb{E}_X\{ \mathbb{E}[Y_{i}(1) | A_i=1, X_i] \} \\
+&= \mathbb{E}_X\{ \mathbb{E}[Y_{i}(1) |X_i] \} \\
+&= \mathbb{E}[Y_{i}(1)]
+\end{align*}
+
+We can prove \(\mathbb{E}[Y_i(0)]=\mathbb{E}_X\{ \mathbb{E}[Y_i | A_i=0, X_i] \}\) by using the same procedure.
+
+\hypertarget{ipw-estimator}{%
+\section{IPW estimator}\label{ipw-estimator}}
+
+\textbf{Idea:} replace \(\mathbb{E}[.]\) with sample means.
+
+\textbf{Define:}
+\[\hat{\Large\tau}_{IPW} = \frac{1}{n} \sum_{i=1}^{n}\frac{Y_iA_i}{e(X_i)} - \frac{1}{n} \sum_{i=1}^{n}\frac{Y_i(1-A_i)}{1-e(X_i)}\]
+To use \(\hat{\Large\tau}_{IPW}\), you need to know \(e(X_i) = \mathbb{P}(A_i=1 |X_i)\).
+
+From \textbf{Law of Large Number}:
+
+\[\frac{1}{n} \sum_{i=1}^{n}\frac{Y_iA_i}{e(X_i)} \rightarrow \mathbb{E} \big[\frac{Y_iA_i}{e(X_i)} \big]\]
+\[\frac{1}{n} \sum_{i=1}^{n}\frac{Y_i(1-A_i)}{1-e(X_i)} \rightarrow \mathbb{E} \big[\frac{Y_i(1-A_i)}{1-e(X_i)} \big]\]
+Thus,
+\[\hat{\Large\tau}_{IPW} \rightarrow \Large\tau\]
+Rewrite,
+\[\hat{\Large\tau}_{IPW} = \frac{1}{n} \sum_{i=1}^{n}\bigg [\frac{Y_iA_i}{e(X_i)} - \frac{Y_i(1-A_i)}{1-e(X_i)} \bigg ]\]
+Further, from \textbf{Central Limit Theorem:} we have:
+
+\[\sqrt{n}(\hat{\Large\tau}_{IPW} - {\Large \tau}) \rightarrow N(0, \text{var}(\frac{Y_iA_i}{e(X_i)} - \frac{Y_i(1-A_i)}{1-e(X_i)}))\]
+
+\hypertarget{outcome-regression}{%
+\section{Outcome Regression}\label{outcome-regression}}
+
+\textbf{Define:}
+\[\hat{\Large\tau}_{OR} = \frac{1}{n}\sum_{i=1}^{n} [f_1(X_i) - f_0(X_i)],\]
+where \(f_1(X_i) = \mathbb{E} \big[ Y_i|A_i=1,X_i\big]\) and \(f_0(X_i) = \mathbb{E} \big[ Y_i|A_i=0,X_i\big]\).
+
+To use \(\hat{\Large\tau}_{OR}\), you need to know \(f_1(X_i)\) and \(f_0(X_i)\).
+
+From \textbf{Law of Large Number:}
+
+\[\hat{\Large\tau}_{OR}= \frac{1}{n}\sum_{i=1}^{n} [f_1(X_i) - f_0(X_i)] \rightarrow \mathbb{E}[f_1(X_i) - f_0(X_i)] = {\Large\tau}\]
+And further from \textbf{Central Limit Theorem:}
+
+\[\sqrt{n}(\hat{\Large\tau}_{OR} - {\Large \tau}) \rightarrow N(0, \text{var}(f_1(X_i) - f_0(X_i)))\]
+
+\hypertarget{doubly-robust-estimator}{%
+\section{Doubly robust estimator}\label{doubly-robust-estimator}}
+
+\textbf{Define:}
+\[\hat{\Large\tau}_{DR} = \frac{1}{n}\sum_{i=1}^{n} \bigg[\frac{(Y_i - f_1(X_i))A_i}{e(X_i)} + f_1(X_i)\bigg] - \frac{1}{n}\sum_{i=1}^{n} \bigg[\frac{(Y_i - f_0(X_i))(1-A_i)}{1-e(X_i)} + f_0(X_i)\bigg]\]
+
+Suppose \(f_1(X_i)\), \(f_0(X_i)\), \(e(X_i)\) are correct, we can show \(\hat{\Large\tau}_{DR} \rightarrow {\Large\tau}\)
+
+\textbf{proof:}
+
+\begin{align*}
+\mathbb{E} \bigg[  \frac{(Y_i - f_1(X_i))A_i}{e(X_i)}\bigg] &= \mathbb{E}_X \bigg\{\mathbb{E} \bigg[  \frac{(Y_i - f_1(X_i))A_i}{e(X_i)}|X_i\bigg] \bigg\} \\
+&= \mathbb{E}_X \bigg\{ \frac{1}{e(X_i)} (\mathbb{E}[Y_iA_i|X_i] - \mathbb{E}[f_1(X_i)A_i|X_i])  \bigg\} \\
+&= \mathbb{E}_X \bigg\{ \frac{1}{e(X_i)} (\mathbb{E}[Y_i|A_1 = 1, X_i] \mathbb{P}(A_i=1|X_i) - f_1(X_i)\mathbb{E}[A_i|X_i])  \bigg\} \\
+&=0
+\end{align*}
+
+The same holds for the other part. Then,
+\[\hat{\Large\tau}_{DR} \rightarrow \mathbb{E}[f_1(X_i)]-\mathbb{E}[f_0(X_i)]\rightarrow {\Large\tau}\]
+
+From \textbf{Central Limit Theorem:}
+
+\[\sqrt{n}(\hat{\Large\tau}_{DR} - {\Large \tau}) \rightarrow N(0, \text{var}(\frac{(Y_i - f_1(X_i))A_i}{e(X_i)} + f_1(X_i) -\frac{(Y_i - f_0(X_i))(1-A_i)}{1-e(X_i)} - f_0(X_i)))\]
+
+Suppose the estimate propensity score is different from the true propensity score, i.e.~\(\hat{e}(X) \neq e(X)\). Assume \(f_1\) and \(f_0\) are known.
+
+\[\hat{\Large\tau}_{DR,\hat{e}} = \frac{1}{n}\sum_{i=1}^{n} \bigg[\frac{(Y_i - f_1(X_i))A_i}{\hat e(X_i)} + f_1(X_i)\bigg] - \frac{1}{n}\sum_{i=1}^{n} \bigg[\frac{(Y_i - f_0(X_i))(1-A_i)}{1-\hat e(X_i)} + f_0(X_i)\bigg]\]
+
+We still have
+
+\[\hat{\Large\tau}_{DR,\hat{e}} \rightarrow {\Large\tau}\]
+
+Suppose \(\hat f_1 \neq f_1\) and \(\hat f_0 \neq f_0\) but \(e\) is correct.
+
+\begin{align*}
+\hat{\Large\tau}_{DR,\hat{f}_1,\hat{f}_0} &= \frac{1}{n}\sum_{i=1}^{n} \bigg[\frac{(Y_i - \hat f_1(X_i))A_i}{ e(X_i)} + \hat f_1(X_i)\bigg] - \frac{1}{n}\sum_{i=1}^{n} \bigg[\frac{(Y_i - \hat f_0(X_i))(1-A_i)}{1-e(X_i)} + \hat f_0(X_i)\bigg] \\
+&= \frac{1}{n} \sum_{i=1}^{n} \bigg(\frac{Y_iA_i}{e(X_i)} - \frac{Y_i(1-A_i)}{1-e(X_i)}\bigg) + \frac{1}{n} \sum_{i=1}^{n} \bigg(\hat f_1(X_i) - \frac{\hat f_1(X_i)A_i}{e(X_i)} - \hat f_0(X_i) - \frac{\hat f_0(X_i)A_i}{1-e(X_i)}\bigg)\\ 
+&= \hat{\Large\tau}_{IPW} + \frac{1}{n} \sum_{i=1}^{n} \bigg(\hat f_1(X_i) - \frac{\hat f_1(X_i)A_i}{e(X_i)} - \hat f_0(X_i) - \frac{\hat f_0(X_i)A_i}{1-e(X_i)}\bigg)
+\end{align*}
+
+We know the first part \(\hat{\Large\tau}_{IPW} \rightarrow {\Large\tau}\) and it is easy to show the latter part goes to zero. Thus,
+
+\[\hat{\Large\tau}_{DR,\hat{f}_1,\hat{f}_0} \rightarrow {\Large\tau}\]
+
+Suppose replace \(f_1\),\(f_0\),\(e\) with estimate function \(\hat f_1\),\(\hat f_0\),\(\hat e\). If \(\hat f_1\),\(\hat f_0\),\(\hat e\) are all l2 converge to \(f_1\),\(f_0\),\(e\), then
+
+\[\hat{\Large\tau}_{DR,\hat{e},\hat{f}_1,\hat{f}_0} \rightarrow {\Large\tau}\]
+
+\hypertarget{asymptotic-variance}{%
+\section{Asymptotic variance}\label{asymptotic-variance}}
+
+\textbf{Asymptotic variance of \(\hat{\Large\tau}_{IPW}\):}
+
+\begin{align*}
+\text{Var} \bigg[\frac{Y_iA_i}{e(X_i)} - \frac{Y_i(1-A_i)}{1-e(X_i)}\bigg] &= \mathbb{E}\bigg[\frac{Y_iA_i}{e(X_i)} - \frac{Y_i(1-A_i)}{1-e(X_i)}\bigg]^2 - \bigg(\mathbb{E}\bigg[\frac{Y_iA_i}{e(X_i)} - \frac{Y_i(1-A_i)}{1-e(X_i)}\bigg]\bigg)^2\\
+&= \mathbb{E}\bigg[\frac{Y_iA_i}{e(X_i)} - \frac{Y_i(1-A_i)}{1-e(X_i)}\bigg]^2 - \tau^2 \\
+&= \mathbb{E}\bigg[ \frac{Y_i^2A_i^2}{e(X_i)^2} - 2\frac{Y_iA_iY_i(1-A_i)}{e(X_i)(1-e(X_i))}+ \frac{Y_i^2(1-A_i)^2}{[1-e(X_i)]^2}\bigg] - \tau^2 \\
+&= \mathbb{E}\bigg[ \frac{Y_i^2A_i}{e(X_i)^2} + \frac{Y_i^2(1-A_i)}{[1-e(X_i)]^2}\bigg] - \tau^2 \\
+&= \mathbb{E}\bigg[ \frac{(Y_{i}(1)A_i + Y_{i}(0)(1-A_i))^2A_i}{e(X_i)^2} \\
+&\,\,\,\,\,\,+ \frac{(Y_{i}(1)A_i + Y_{i}(0)(1-A_i))^2(1-A_i)}{[1-e(X_i)]^2}\bigg] - \tau^2 \\
+&= \mathbb{E}\bigg[ \frac{Y_i(1)^2A_i}{e(X_i)^2} + \frac{Y_i(0)^2(1-A_i)}{[1-e(X_i)]^2}\bigg] - \tau^2 \\
+&= \mathbb{E}\bigg\{\mathbb{E}\bigg[ \frac{Y_i(1)^2A_i}{e(X_i)^2} + \frac{Y_i(0)^2(1-A_i)}{[1-e(X_i)]^2}| X_i\bigg] \bigg\}- \tau^2 \\
+&= \mathbb{E}\bigg[ \frac{Y_i(1)^2}{e(X_i)} + \frac{Y_i(0)^2}{1-e(X_i)}\bigg] - \tau^2
+\end{align*}
+
+\textbf{Asymptotic variance of \(\hat{\Large\tau}_{OR}\):}
+
+\begin{align*}
+\text{Var}(f_1(X_i) - f_0(X_i)) &= \mathbb{E}[f_1(X_i) - f_0(X_i)]^2 - [\mathbb{E}(f_1(X_i) - f_0(X_i))]^2\\
+&=\mathbb{E}[f_1(X_i) - f_0(X_i)]^2 - \tau^2
+\end{align*}
+
+\textbf{Asymptotic variance of \(\hat{\Large\tau}_{DR}\):}
+
+\begin{align*}
+&\text{Var}\bigg[ \frac{(Y_i - f_1(X_i))A_i}{e(X_i)} + f_1(X_i) -\frac{(Y_i - f_0(X_i))(1-A_i)}{1-e(X_i)} - f_0(X_i)\bigg] \\
+&= \mathbb{E}\bigg[ \frac{(Y_i - f_1(X_i))A_i}{e(X_i)} + f_1(X_i) -\frac{(Y_i - f_0(X_i))(1-A_i)}{1-e(X_i)} - f_0(X_i) - \tau\bigg]^2 \\
+&=\mathbb{E} \bigg\{  \bigg[\frac{(Y_i - f_1(X_i))A_i}{e(X_i)}- \frac{(Y_i - f_0(X_i))(1-A_i)}{1-e(X_i)}\bigg]^2 \\
+&\,\,\,\,\,\,+ 2\bigg[\frac{(Y_i - f_1(X_i))A_i}{e(X_i)}- \frac{(Y_i - f_0(X_i))(1-A_i)}{1-e(X_i)}\bigg]\bigg[f_1(X_i) - f_0(X_i) - tau\bigg]\\
+&\,\,\,\,\,\,+ \bigg[f_1(X_i) - f_0(X_i) - tau\bigg]^2 \bigg\} \\
+&=\mathbb{E} \bigg\{  \bigg[\frac{(Y_i - f_1(X_i))A_i}{e(X_i)}- \frac{(Y_i - f_0(X_i))(1-A_i)}{1-e(X_i)}\bigg]^2 \\
+&\,\,\,\,\,\,+ \bigg[f_1(X_i) - f_0(X_i) - tau\bigg]^2 \bigg\} \\
+&= \mathbb{E}\left[\frac{\left(Y_{i}(1)-\mathbb{E}\left[Y_{i}(1) | X_{i}\right]\right)^{2}}{e\left(X_{i}\right)}+\frac{\left(Y_{i}(0)-\mathbb{E}\left[Y_{i}(0) | X_{i}\right]\right)^{2}}{1-e\left(X_{i}\right)}+\left(f_{1}\left(X_{i}\right)-f_{0}\left(X_{i}\right)-\tau\right)^{2}\right]
+\end{align*}
+
+\hypertarget{sensitivity2}{%
+\chapter{Sensitivity Analysis II}\label{sensitivity2}}
+
+\textbf{Reference:}
+
+\begin{itemize}
+\tightlist
+\item
+  Peng and Tyler (2014), ``Generalized Cornfield conditions for the risk difference''
+\item
+  Peng and Tyler (2016), ``Sensitivity Analysis Without Assumptions''
+\item
+  Tyler and Peng (2017), ``Sensitivity Analysis in Observational Research: Introducing the E-Value''
+\end{itemize}
+
+This chapter will cover the following topics:
+
+\begin{itemize}
+\tightlist
+\item
+  E-values
+\item
+  Sensitivity analysis for IPW, OR and DR estimators.
+\end{itemize}
+
+A central question in causal inference with observational studies is the sensitivity of conclusions to unmeasured confounding.
+
+First we introduce three variables to describe causal effect:
+
+\begin{itemize}
+\tightlist
+\item
+  Risk Difference = \[\tau = \mathbb{E}[Y_i(1) - Y_i(0)] = \mathbb{P}(Y_i(1)=1)-\mathbb{P}(Y_i(0)=1)\]
+\item
+  Relative Risk (RR) = \[\frac{\mathbb{P}(Y_i(1)=1)}{\mathbb{P}(Y_i(0)=1)}\] e.g.~RR=3 means treatment causal increases the probability of \(Y=1\) by a factor of 3
+\item
+  Odds Ratio (OR) = \[\frac{\mathbb{P}(Y_i(1)=1)}{1-\mathbb{P}(Y_i(1)=1)}\bigg/\frac{\mathbb{P}(Y_i(0)=1)}{1-\mathbb{P}(Y_i(0)=1)}\] e.g.~OR=3 means treatment causal increases the odss of \(Y=1\) by 3 fold.
+\end{itemize}
+
+\textbf{Goal:} we want to assess what happens to estimators of \(tau\) and RR when an observed confounder \(U\) is present
+
+Review the assumptions:
+
+\begin{itemize}
+\tightlist
+\item
+  SUTUA: \(Y_i = A_iY_i(1) + (1-A_i)Y_i(0)\)
+\item
+  Conditional ignorability: \(Y_i(1),Y_i(0) \perp A_i |X_i\)
+\item
+  \(0 << P(A_i=1|X_i=x) <<1 \,\,\forall x\)
+\end{itemize}
+
+When \(U\) is present, the assumptions becomes:
+
+\begin{itemize}
+\tightlist
+\item
+  Conditional ignorability: \(Y_i(1),Y_i(0) \perp A_i |X_i, U_i\)
+\item
+  \(0 << P(A_i=1|X_i=x, U_i=u) <<1 \,\,\forall x,u\)
+\end{itemize}
+
+\textbf{Graphically:}
+
+Let \(RR_{AY}\) be the relative risk of treatment on outcome. Let \(RR_{UA}\) be the relative risk of confounder on treatment. Let \(RR_{UY}\) be the relative risk of confounder on outcome. In the presence of \(U\), our estimators of \(tau\) and RR are biased. We want to measure how much is this bias.
+
+\textbf{Define:}
+\[B =\frac{RR_{AU}RR_{UY}}{RR_{AU}+RR_{UY}-1}\]
+\textbf{Theorem:}
+\[RR_{AY} \geq \frac{\hat{RR}}{B}\]
+Note that:
+
+\begin{itemize}
+\tightlist
+\item
+  This bound is sharp.
+\item
+  \(U\) can be any type (one dimension and multi-dimension).
+\item
+  This formula can also be applied on the lower bound of the confidence interval.
+\end{itemize}
+
+Example: Study the causal effect of baby formula (A=1) on respiratory death (Y=1)
+
+\begin{itemize}
+\tightlist
+\item
+  \(\hat{RR} = 3.9\), 95\% CI:(1.8,8.7)
+\item
+  They controlled for age, \ldots. (Xs)
+\end{itemize}
+
+What if there is an \(U\)? How would this \(U\) change the result?
+
+\(\exists U\) s.t. \(RR_{UA} = 2\), probability of taking infants formula increase 2 and \(RR_{UY} = 4\) If \(U=1\), then baby is 4 times more likely to die than if \(U=0\). Then
+\[RR_{AY} \geq \frac{3.9}{1.6} = 2.43\] and \[L_{AY} \geq \frac{\hat{L}_{AY}}{B} = \frac{1.8}{1.6} = 1.125\]
+
+\hypertarget{e-value}{%
+\section{E-value}\label{e-value}}
+
+Suppose \(RR_{UA} = RR_{UY}\), then \(B = \frac{RR_{UA}^2}{2RR_{UA} -1}\). Then consider the point in the lower bound where \(RR_{AY} = 1\),
+
+\[1 = RR_{AY} \geq \frac{\hat{RR}}{B} = \frac{\hat{RR}}{\frac{RR_{AU}^2}{2RR_{AU} -1}}\]
+Solve for \(RR_{UA}\), we get the
+\[\text{E-value}=\hat{RR} + \sqrt{\hat{RR}(\hat{RR}-1)}\]
+Note that:
+
+\begin{itemize}
+\tightlist
+\item
+  Higher E-value means the study is more robust to unmeasured U.
+\item
+  E-calue is the minimum strength of assoication on the risk ratio scale, that an unmeasured confounder would need to have with both the treatment and outcome, conditional on the measured covariates, to explain away a treatment-outcome association.
+\item
+  E-value is a continuous measure of an association's robustness to potential uncontrolled condounders. The lowerst possible E-value is 1 (that is, no unmeasured confounding is needed to explain away the observed association). The higher the E-value, the stronger the confounder associations must be to explain away the effect.i
+\end{itemize}
+
+\textbf{Risk difference \(\tau\):} Let \(\hat{\tau}\) be the estimator, Y binary, \(p_1 = \mathbb{P}(Y_i = 1|A_i=1)\), \(p_0 = \mathbb{P}(Y_i = 1|A_i=0)\) and \(f = P(A_i=1)\).
+
+\textbf{Theorem:}
+\[\tau_{AY} \geq (p_1 - Bp_0)\sqrt{f + \frac{1-f}{B}}\]
+
+\hypertarget{iv}{%
+\chapter{Instrumental Variable}\label{iv}}
+
+\hypertarget{iv-without-covariates-x}{%
+\section{IV without covariates X}\label{iv-without-covariates-x}}
+
+\textbf{Goal}: Estimate the causal effect of \(A\) on \(Y\), especially when:
+
+\begin{itemize}
+\tightlist
+\item
+  A is ``hopelessly'' confounded
+\item
+  A can never be randomized
+\end{itemize}
+
+\textbf{Idea}: Use ``external'' random variation in the data to ``extract'' randomness out of confounded A
+
+\textbf{Controversy}: It's ``impossible'' to find such Z.
+
+\textbf{Set up:}
+
+\begin{itemize}
+\tightlist
+\item
+  \(Z \in {0,1}\), Instrumental Variable
+\item
+  \(A \in {0,1}\), Treatment
+\item
+  \(Y \in \mathbb{R}\), Outcome
+\end{itemize}
+
+\textbf{Potential Outcome:}
+
+\begin{itemize}
+\tightlist
+\item
+  \(A_i^{(Z=1)}\): potential treatment when \(Z=1\)
+\item
+  \(A_i^{(Z=0)}\): potential treatment when \(Z=0\)
+\item
+  \(Y_i^{(Z=1, A=1)}\),\(Y_i^{(Z=0, A=1)}\),\(Y_i^{(Z=1, A=0)}\),\(Y_i^{(Z=0, A=0)}\)
+\item
+  \(Y_i^{(z, a)}\) is the potential outcome if unit \(i\) received \(z\) and \(a\)
+\end{itemize}
+
+\textbf{Assumptions:}
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{A1}: SUTVA
+  \[A_i = Z_iA_i(1) + (1-Z_i)A_i(0)\]
+  \[Y_i = Z_iY_i^{(1, A_i(1))} + (1-Z_i)Y_i^{(0, A_i(0))}\]
+\item
+  \emph{A2}: \(Z \perp Y^{(z,a)}, A^{(z)}\), I.V. is randomized
+\item
+  \emph{A3}: \(0 < \mathbb{P}(Z_i = 1) <1\)
+\item
+  \emph{A4}: \(\mathbb{E}[A(1) - A(0)] \neq 0\), I.V.(Z) has casual effect on A
+\item
+  \emph{A5}: \(Y_i^{(Z=1, a)}=Y_i^{(Z=0, a)} = Y_i^{(a)}\)
+\item
+  \emph{A6}: \(A^{(1)} \geq A^{(0)}\), monotoncity
+\end{itemize}
+
+Notes on the assumptions:
+
+\begin{itemize}
+\tightlist
+\item
+  If Z was completely randomized like in a RCT, A1-A3 are plausible.
+\item
+  A4 can be checked from data if Z was randomized
+\item
+  A5 can never be fully verified with data!! We can observe \(Y_i^{(1,a)}\),\(Y_i^{(0,a)}\) at the same time.
+\item
+  A6 means one-sided complicance exists in the experiment design. One-sided complicance: \(A_i(0) = 0\), i.e \(A_i(0) = 1\) will never happen.
+\end{itemize}
+
+Accoding to this paper, Angrist, Imbens and Rubin (1996) ``Identification of Causal Effects Using Instrumental Variables'', we can divide the subjects into four categories:
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{G1}: \(A_i(1) =1,A_i(0) =1\): Always takers (doesn't exist for one-sided compliance)
+\item
+  \emph{G2}: \(A_i(1) =0,A_i(0) =0\): Never takers
+\item
+  \emph{G3}: \(A_i(1) =1,A_i(0) =0\): Compliers
+\item
+  \emph{G4}: \(A_i(1) =0,A_i(0) =1\): Defiers
+\end{itemize}
+
+\emph{G1-4} partitions the population in a non-overlapping manner. If monotonicity holds, then defiers cannot exists.
+
+\textbf{Theorem:} If A1-A6 held, then
+\begin{align*}\mathbb{E}[Y_i(1) - Y_i(0) | \,i\text{ is complier }] &= \mathbb{E}[Y_i(1) - Y_i(0) | A_i(1)=1, A_i(0)=1] \\
+&= \frac{\mathbb{E}(Y_i | Z_i=1)-\mathbb{E}(Y_i | Z_i=0)}{\mathbb{E}(A_i | Z_i=1)- \mathbb{E}(A_i | Z_i=0)}
+\end{align*}
+
+Note that the estimand identifies the ATE, but among a group of people (compliers) and we don't know who they are!
+
+\textbf{proof:}
+
+First, let us look at the numerator.
+
+\begin{align*}
+&\,\,\,\,\,\,\,\,E(Y_i |Z_i=1) - E(Y_i|Z_i=0) \\
+&=^{A_1} E(Z_iY_i^{(1,A_i(1))}+(1-Z_i)Y_i^{(0,A_i(0))} |Z_i=1  )-\\
+&\,\,\,\,\,\,\,\,E(Z_iY_i^{(1,A_i(1))}+(1-Z_i)Y_i^{(0,A_i(0))} |Z_i=0  ) \\
+&= E(Y_i^{(1, A_i(1))}|Z_i=1) - E(Y_i^{(0, A_i(0))}|Z_i=0) \\
+&=^{A_2} E(Y_i^{(1, A_i(1))}) - E(Y_i^{(0, A_i(0))}) \\
+&= E[ (Y_i^{(1, A_i(1))}) - E(Y_i^{(0, A_i(0))})I(A_i(1)=1,A_i(0)=0)+\\
+&\,\,\,\,\,\,\,(Y_i^{(1, A_i(1))}) - E(Y_i^{(0, A_i(0))})I(A_i(1)=1,A_i(0)=1)+\\
+&\,\,\,\,\,\,\,(Y_i^{(1, A_i(1))}) - E(Y_i^{(0, A_i(0))})I(A_i(1)=0,A_i(0)=0)]\\
+& = E[ (Y_i^{(1, A_i(1))}) - E(Y_i^{(0, A_i(0))})I(A_i(1)=1,A_i(0)=0) ] \\
+& = E[ (Y_i^{(1)}) - E(Y_i^{(0)})I(A_i(1)=1,A_i(0)=0) ]
+\end{align*}
+
+Then, we look at the denominator.
+\begin{align*}
+&\,\,\,\,\,\,\,\,E[A_i |Z_i=1] - E[A_i|Z_i=0]\\
+&= E[Z_iA_i(1)+(1-Z_i)A_i(0)|Z_i=1] -\\
+&\,\,\,\,\,\,\,\,E[Z_iA_i(1)+(1-Z_i)A_i(0)|Z_i=0]\\
+&= E[A_i(1) |Z_i=1] - E[A_i(0)|Z_i=0]\\
+&= E[A_i(1) ] - E[A_i(0)] \\
+&= E[A_i(1)  - A_i(0)]
+\end{align*}
+
+Thus,
+\begin{align*}
+&\,\,\,\,\,\,\,\,E[Y_i(1) - Y_i(0) | A_i(1)=1, A_i(0)=1] \\
+&= \frac{E[(Y_i(1) - Y_i(0))I(A_i(1)=1, A_i(0)=1)]}{E[I(A_i(1)=1, A_i(0)=1)]} \\
+&= \frac{E[(Y_i(1) - Y_i(0))I(A_i(1)=1, A_i(0)=1)]}{E[A_i(1) - A_i(0)]}
+\end{align*}
+
+\textbf{How to estmate?}
+
+\textbf{First method:}We can use the sample mean to estimate the terms in the theorem, i.e.
+\[\hat E(Y_i |Z_i=1) = \frac{\sum_{i=1}^{n}Y_iZ_i}{\sum_{i=1}^{n}Z_i} \]
+
+\textbf{Theorem: } \(\hat E(Y_i |Z_i=1) \overset{p}{\to} E(Y_i |Z_i=1)\)
+
+\textbf{proof:}
+
+\[\frac{1}{n}\sum_{i=1}^{n}Y_iZ_i \overset{p}{\to} E[Y_iZ_i]\]
+\[\frac{1}{n}\sum_{i=1}^{n}Z_i \overset{p}{\to} E[Z_i]\]
+Thus, by using Slutsky's theorem:
+
+\[\frac{\sum_{i=1}^{n}Y_iZ_i}{\sum_{i=1}^{n}Z_i} \overset{p}{\to} \frac{E[Y_iZ_i]}{E[Z_i]} = E[Y_i|Z_i=1]\]
+
+\textbf{Theorem:}
+
+\[\hat{\tau}_w = \frac{\hat{E}_{YZ}-\hat{E}_{Y(1-Z)}}{\hat{E}_{AZ}-\hat{E}_{A(1-Z)}} \overset{p}{\to} \tau = \frac{{E}_{YZ}-{E}_{Y(1-Z)}}{{E}_{AZ}-{E}_{A(1-Z)}}\]
+and
+
+\[\sqrt{\hat{\tau}_w - \tau} \to N(0, E\bigg[ \frac{\frac{Y_i(1)^2}{p}+\frac{Y_i(0)^2}{1-p}}{\tau_A^2} \bigg] - \tau^2),\]
+where \(p = \mathbb{P}(Z_i=1)\) and \(\tau_A = E[A_i |Z_i=1]-E[A_i |Z_i=0]\)
+
+\textbf{Second method:} Two Stage Least Square
+
+\textbf{Theorem:} If \(Z\) is binary, then \(\hat{\tau}_{TSLS} = \hat{\tau}_w\)
+
+\hypertarget{iv-with-covariates-x}{%
+\section{IV with covariates X}\label{iv-with-covariates-x}}
+
+\textbf{Assumptions:}
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{A1}: SUTVA
+  \[A_i = Z_iA_i(1) + (1-Z_i)A_i(0)\]
+  \[Y_i = Z_iY_i^{(1, A_i(1))} + (1-Z_i)Y_i^{(0, A_i(0))}\]
+\item
+  \emph{A2}: \(Z_i \perp A_i(1),A_i(0), Y_i^{(1, A_i(1))},Y_i^{(0, A_i(0))} | X_i\)
+\item
+  \emph{A3}: \(0 < \mathbb{P}(Z_i = 1 |X_i=x) <1\,\,\forall x\)
+\item
+  \emph{A4}: \(\mathbb{E}[A(1) - A(0)|X_i=x] \neq 0\,\,\forall x\)
+\item
+  \emph{A5}: \(Y_i^{(Z=1, a)}=Y_i^{(Z=0, a)} = Y_i^{(a)}\)
+\item
+  \emph{A6}: \(A^{(1)} \geq A^{(0)}\), monotoncity
+\end{itemize}
+
+\textbf{Theorem:} Under assumptions \emph{A1-A6}, The ATE among compliers:
+
+\[{E}[Y_i(1) - Y_i(0) | A_i(1)=1, A_i(0)=1]=\frac{E_X\{E[Y_i|Z_i=1,X_i]-E[Y_i|Z_i=0,X_i]\}}{E_X\{E[A_i|Z_i=1,X_i]-E[A_i|Z_i=0,X_i]\}}\]
+
+\textbf{Strategy of estimating with Xs:}
+
+\textbf{1:Two stage least square}
+
+\textbf{Property of \(\hat \tau_{TSLS}\)}
+
+\begin{itemize}
+\tightlist
+\item
+  \(\hat \tau_{TSLS}\to\tau\)
+\item
+  \(\sqrt{n}(\hat \tau_{TSLS}-\tau) \to N(0, V_{TSLS})\)
+\end{itemize}
+
+\textbf{2:Matching (non-parametric)}
+
+Take the ratio of the coef estimate between \(Y\sim Z+.\) and \(A\sim Z+.\)
+
+\textbf{Property of \(\hat \tau_{match}\)}
+
+\begin{itemize}
+\tightlist
+\item
+  \(\hat \tau_{match}\to\tau\)
+\item
+  \(\sqrt{n}(\hat \tau_{match}-\tau) \to N(0, V_{match})\)
+\item
+  \(V_{match} \geq V_{TSLS}\)
+\end{itemize}
+
+\textbf{3:IPW OR DR}
+
+\hypertarget{new-topics-in-i.v.}{%
+\section{New topics in I.V.}\label{new-topics-in-i.v.}}
+
+\begin{itemize}
+\tightlist
+\item
+  Multiple IVs
+\item
+  Privacy and IV
+\end{itemize}
+
+\hypertarget{m-estimator}{%
+\chapter{notes on M-estimator}\label{m-estimator}}
+
+\textbf{References:}
+
+\begin{itemize}
+\item
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \tightlist
+  \item
+    Stefanski and Boos's paper on M-estimation.
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \setcounter{enumi}{1}
+  \tightlist
+  \item
+    Chapter 5 of Asymptotic Statistics by van der Vaart.
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \setcounter{enumi}{2}
+  \tightlist
+  \item
+    Pages 29 to 32 in Semiparametric Theory and Missing Data by Tsiastis.
+  \end{enumerate}
+\end{itemize}
+
+  \bibliography{book.bib,packages.bib}
+
+\end{document}

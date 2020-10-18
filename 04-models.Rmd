@@ -34,7 +34,6 @@ $$\tau = \mathbb{E}_X \big\{ \mathbb{E} \big[ Y_i|A_i=1,X_i\big] - \mathbb{E}
 By assumption 3, $\mathbb{E}\big[\frac{Y_iA_i}{e(X_i)}\big]$ is well defined. Thus,
 
 \begin{align*}
-
 \mathbb{E}\big[\frac{Y_iA_i}{e(X_i)}\big] &=\mathbb{E}_X \big\{
 \mathbb{E}\big[\frac{Y_iA_i}{e(X_i)} | X_i\big] \big\} \\
 &= \mathbb{E}_X \big\{ \frac{1}{e(X_i)} \mathbb{E} \big[ Y_iA_i | X_i\big] \big\} \\

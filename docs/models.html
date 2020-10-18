@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 causal Inference with Models | Causal Inference</title>
+  <title>Chapter 4 causal Inference with Models | Causal Inference</title>
   <meta name="description" content="This is the notes of Causal Inference. Most of the materials come from STAT 992 instructed by Prof. Kang and from several textbooks in causal inference" />
-  <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 causal Inference with Models | Causal Inference" />
+  <meta property="og:title" content="Chapter 4 causal Inference with Models | Causal Inference" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="ttuowang/causal-inference-notes" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 causal Inference with Models | Causal Inference" />
+  <meta name="twitter:title" content="Chapter 4 causal Inference with Models | Causal Inference" />
   
   <meta name="twitter:description" content="This is the notes of Causal Inference. Most of the materials come from STAT 992 instructed by Prof. Kang and from several textbooks in causal inference" />
   
@@ -24,7 +24,7 @@
 <meta name="author" content="Tuo Wang" />
 
 
-<meta name="date" content="2019-11-01" />
+<meta name="date" content="2020-10-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,6 +50,7 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 
@@ -69,37 +70,37 @@
 <li><a href="./">Causal Inference</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
-<li class="chapter" data-level="2" data-path="basic.html"><a href="basic.html"><i class="fa fa-check"></i><b>2</b> Propensity score</a></li>
-<li class="chapter" data-level="3" data-path="matching.html"><a href="matching.html"><i class="fa fa-check"></i><b>3</b> Matching</a><ul>
-<li class="chapter" data-level="3.1" data-path="matching.html"><a href="matching.html#what-is-matching"><i class="fa fa-check"></i><b>3.1</b> What is matching?</a></li>
-<li class="chapter" data-level="3.2" data-path="matching.html"><a href="matching.html#exact-matching"><i class="fa fa-check"></i><b>3.2</b> Exact Matching</a></li>
-<li class="chapter" data-level="3.3" data-path="matching.html"><a href="matching.html#propensity-score-matching"><i class="fa fa-check"></i><b>3.3</b> Propensity Score Matching</a></li>
-<li class="chapter" data-level="3.4" data-path="matching.html"><a href="matching.html#multivariate-caliper-matching"><i class="fa fa-check"></i><b>3.4</b> Multivariate Caliper Matching</a><ul>
-<li class="chapter" data-level="3.4.1" data-path="matching.html"><a href="matching.html#a-mahalanobis-distances"><i class="fa fa-check"></i><b>3.4.1</b> (a) Mahalanobis Distances</a></li>
-<li class="chapter" data-level="3.4.2" data-path="matching.html"><a href="matching.html#b-penalize-large-distance"><i class="fa fa-check"></i><b>3.4.2</b> (b) Penalize large distance</a></li>
+<li class="part"><span><b>I Introduction</b></span></li>
+<li class="chapter" data-level="1" data-path="basic.html"><a href="basic.html"><i class="fa fa-check"></i><b>1</b> Propensity score</a></li>
+<li class="chapter" data-level="2" data-path="matching.html"><a href="matching.html"><i class="fa fa-check"></i><b>2</b> Matching</a><ul>
+<li class="chapter" data-level="2.1" data-path="matching.html"><a href="matching.html#what-is-matching"><i class="fa fa-check"></i><b>2.1</b> What is matching?</a></li>
+<li class="chapter" data-level="2.2" data-path="matching.html"><a href="matching.html#exact-matching"><i class="fa fa-check"></i><b>2.2</b> Exact Matching</a></li>
+<li class="chapter" data-level="2.3" data-path="matching.html"><a href="matching.html#propensity-score-matching"><i class="fa fa-check"></i><b>2.3</b> Propensity Score Matching</a></li>
+<li class="chapter" data-level="2.4" data-path="matching.html"><a href="matching.html#multivariate-caliper-matching"><i class="fa fa-check"></i><b>2.4</b> Multivariate Caliper Matching</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="matching.html"><a href="matching.html#a-mahalanobis-distances"><i class="fa fa-check"></i><b>2.4.1</b> (a) Mahalanobis Distances</a></li>
+<li class="chapter" data-level="2.4.2" data-path="matching.html"><a href="matching.html#b-penalize-large-distance"><i class="fa fa-check"></i><b>2.4.2</b> (b) Penalize large distance</a></li>
 </ul></li>
-<li class="chapter" data-level="3.5" data-path="matching.html"><a href="matching.html#matching-with-multiple-controls"><i class="fa fa-check"></i><b>3.5</b> Matching with Multiple controls</a></li>
-<li class="chapter" data-level="3.6" data-path="matching.html"><a href="matching.html#full-matching"><i class="fa fa-check"></i><b>3.6</b> Full Matching</a></li>
+<li class="chapter" data-level="2.5" data-path="matching.html"><a href="matching.html#matching-with-multiple-controls"><i class="fa fa-check"></i><b>2.5</b> Matching with Multiple controls</a></li>
+<li class="chapter" data-level="2.6" data-path="matching.html"><a href="matching.html#full-matching"><i class="fa fa-check"></i><b>2.6</b> Full Matching</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="sensitivity1.html"><a href="sensitivity1.html"><i class="fa fa-check"></i><b>4</b> Sensitivity Analysis I</a><ul>
-<li class="chapter" data-level="4.1" data-path="sensitivity1.html"><a href="sensitivity1.html#sensitivity-analysis-for-matched-sets-with-binary-outcomes"><i class="fa fa-check"></i><b>4.1</b> Sensitivity Analysis for Matched Sets with Binary Outcomes</a></li>
+<li class="chapter" data-level="3" data-path="sensitivity1.html"><a href="sensitivity1.html"><i class="fa fa-check"></i><b>3</b> Sensitivity Analysis I</a><ul>
+<li class="chapter" data-level="3.1" data-path="sensitivity1.html"><a href="sensitivity1.html#sensitivity-analysis-for-matched-sets-with-binary-outcomes"><i class="fa fa-check"></i><b>3.1</b> Sensitivity Analysis for Matched Sets with Binary Outcomes</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>5</b> causal Inference with Models</a><ul>
-<li class="chapter" data-level="5.1" data-path="models.html"><a href="models.html#ipw-estimator"><i class="fa fa-check"></i><b>5.1</b> IPW estimator</a></li>
-<li class="chapter" data-level="5.2" data-path="models.html"><a href="models.html#outcome-regression"><i class="fa fa-check"></i><b>5.2</b> Outcome Regression</a></li>
-<li class="chapter" data-level="5.3" data-path="models.html"><a href="models.html#doubly-robust-estimator"><i class="fa fa-check"></i><b>5.3</b> Doubly robust estimator</a></li>
-<li class="chapter" data-level="5.4" data-path="models.html"><a href="models.html#asymptotic-variance"><i class="fa fa-check"></i><b>5.4</b> Asymptotic variance</a></li>
+<li class="chapter" data-level="4" data-path="models.html"><a href="models.html"><i class="fa fa-check"></i><b>4</b> causal Inference with Models</a><ul>
+<li class="chapter" data-level="4.1" data-path="models.html"><a href="models.html#ipw-estimator"><i class="fa fa-check"></i><b>4.1</b> IPW estimator</a></li>
+<li class="chapter" data-level="4.2" data-path="models.html"><a href="models.html#outcome-regression"><i class="fa fa-check"></i><b>4.2</b> Outcome Regression</a></li>
+<li class="chapter" data-level="4.3" data-path="models.html"><a href="models.html#doubly-robust-estimator"><i class="fa fa-check"></i><b>4.3</b> Doubly robust estimator</a></li>
+<li class="chapter" data-level="4.4" data-path="models.html"><a href="models.html#asymptotic-variance"><i class="fa fa-check"></i><b>4.4</b> Asymptotic variance</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="sensitivity2.html"><a href="sensitivity2.html"><i class="fa fa-check"></i><b>6</b> Sensitivity Analysis II</a><ul>
-<li class="chapter" data-level="6.1" data-path="sensitivity2.html"><a href="sensitivity2.html#e-value"><i class="fa fa-check"></i><b>6.1</b> E-value</a></li>
+<li class="chapter" data-level="5" data-path="sensitivity2.html"><a href="sensitivity2.html"><i class="fa fa-check"></i><b>5</b> Sensitivity Analysis II</a><ul>
+<li class="chapter" data-level="5.1" data-path="sensitivity2.html"><a href="sensitivity2.html#e-value"><i class="fa fa-check"></i><b>5.1</b> E-value</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="iv.html"><a href="iv.html"><i class="fa fa-check"></i><b>7</b> Instrumental Variable</a><ul>
-<li class="chapter" data-level="7.1" data-path="iv.html"><a href="iv.html#iv-without-covariates-x"><i class="fa fa-check"></i><b>7.1</b> IV without covariates X</a></li>
-<li class="chapter" data-level="7.2" data-path="iv.html"><a href="iv.html#iv-with-covariates-x"><i class="fa fa-check"></i><b>7.2</b> IV with covariates X</a></li>
-<li class="chapter" data-level="7.3" data-path="iv.html"><a href="iv.html#new-topics-in-i.v."><i class="fa fa-check"></i><b>7.3</b> New topics in I.V.</a></li>
+<li class="chapter" data-level="6" data-path="iv.html"><a href="iv.html"><i class="fa fa-check"></i><b>6</b> Instrumental Variable</a><ul>
+<li class="chapter" data-level="6.1" data-path="iv.html"><a href="iv.html#iv-without-covariates-x"><i class="fa fa-check"></i><b>6.1</b> IV without covariates X</a></li>
+<li class="chapter" data-level="6.2" data-path="iv.html"><a href="iv.html#iv-with-covariates-x"><i class="fa fa-check"></i><b>6.2</b> IV with covariates X</a></li>
+<li class="chapter" data-level="6.3" data-path="iv.html"><a href="iv.html#new-topics-in-i.v."><i class="fa fa-check"></i><b>6.3</b> New topics in I.V.</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="m-estimator.html"><a href="m-estimator.html"><i class="fa fa-check"></i><b>8</b> notes on M-estimator</a></li>
+<li class="chapter" data-level="7" data-path="m-estimator.html"><a href="m-estimator.html"><i class="fa fa-check"></i><b>7</b> notes on M-estimator</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -121,7 +122,7 @@
 
             <section class="normal" id="section-">
 <div id="models" class="section level1">
-<h1><span class="header-section-number">Chapter 5</span> causal Inference with Models</h1>
+<h1><span class="header-section-number">Chapter 4</span> causal Inference with Models</h1>
 <p>Throughout this chapter, we have the following set up :</p>
 <ul>
 <li><span class="math inline">\(Y_i\)</span>, <span class="math inline">\(A_i\)</span>, <span class="math inline">\(X_i\)</span> i.i.d <span class="math inline">\(\sim\)</span> <span class="math inline">\(F\)</span></li>
@@ -155,7 +156,6 @@
 <p><strong>proof :</strong></p>
 <p>By assumption 3, <span class="math inline">\(\mathbb{E}\big[\frac{Y_iA_i}{e(X_i)}\big]\)</span> is well defined. Thus,</p>
 <p><span class="math display">\[\begin{align*}
-
 \mathbb{E}\big[\frac{Y_iA_i}{e(X_i)}\big] &amp;=\mathbb{E}_X \big\{
 \mathbb{E}\big[\frac{Y_iA_i}{e(X_i)} | X_i\big] \big\} \\
 &amp;= \mathbb{E}_X \big\{ \frac{1}{e(X_i)} \mathbb{E} \big[ Y_iA_i | X_i\big] \big\} \\
@@ -176,7 +176,7 @@
 \end{align*}\]</span></p>
 <p>We can prove <span class="math inline">\(\mathbb{E}[Y_i(0)]=\mathbb{E}_X\{ \mathbb{E}[Y_i | A_i=0, X_i] \}\)</span> by using the same procedure.</p>
 <div id="ipw-estimator" class="section level2">
-<h2><span class="header-section-number">5.1</span> IPW estimator</h2>
+<h2><span class="header-section-number">4.1</span> IPW estimator</h2>
 <p><strong>Idea:</strong> replace <span class="math inline">\(\mathbb{E}[.]\)</span> with sample means.</p>
 <p><strong>Define:</strong>
 <span class="math display">\[\hat{\Large\tau}_{IPW} = \frac{1}{n} \sum_{i=1}^{n}\frac{Y_iA_i}{e(X_i)} - \frac{1}{n} \sum_{i=1}^{n}\frac{Y_i(1-A_i)}{1-e(X_i)}\]</span>
@@ -192,7 +192,7 @@ Further, from <strong>Central Limit Theorem:</strong> we have:</p>
 <p><span class="math display">\[\sqrt{n}(\hat{\Large\tau}_{IPW} - {\Large \tau}) \rightarrow N(0, \text{var}(\frac{Y_iA_i}{e(X_i)} - \frac{Y_i(1-A_i)}{1-e(X_i)}))\]</span></p>
 </div>
 <div id="outcome-regression" class="section level2">
-<h2><span class="header-section-number">5.2</span> Outcome Regression</h2>
+<h2><span class="header-section-number">4.2</span> Outcome Regression</h2>
 <p><strong>Define:</strong>
 <span class="math display">\[\hat{\Large\tau}_{OR} = \frac{1}{n}\sum_{i=1}^{n} [f_1(X_i) - f_0(X_i)],\]</span>
 where <span class="math inline">\(f_1(X_i) = \mathbb{E} \big[ Y_i|A_i=1,X_i\big]\)</span> and <span class="math inline">\(f_0(X_i) = \mathbb{E} \big[ Y_i|A_i=0,X_i\big]\)</span>.</p>
@@ -203,7 +203,7 @@ And further from <strong>Central Limit Theorem:</strong></p>
 <p><span class="math display">\[\sqrt{n}(\hat{\Large\tau}_{OR} - {\Large \tau}) \rightarrow N(0, \text{var}(f_1(X_i) - f_0(X_i)))\]</span></p>
 </div>
 <div id="doubly-robust-estimator" class="section level2">
-<h2><span class="header-section-number">5.3</span> Doubly robust estimator</h2>
+<h2><span class="header-section-number">4.3</span> Doubly robust estimator</h2>
 <p><strong>Define:</strong>
 <span class="math display">\[\hat{\Large\tau}_{DR} = \frac{1}{n}\sum_{i=1}^{n} \bigg[\frac{(Y_i - f_1(X_i))A_i}{e(X_i)} + f_1(X_i)\bigg] - \frac{1}{n}\sum_{i=1}^{n} \bigg[\frac{(Y_i - f_0(X_i))(1-A_i)}{1-e(X_i)} + f_0(X_i)\bigg]\]</span></p>
 <p>Suppose <span class="math inline">\(f_1(X_i)\)</span>, <span class="math inline">\(f_0(X_i)\)</span>, <span class="math inline">\(e(X_i)\)</span> are correct, we can show <span class="math inline">\(\hat{\Large\tau}_{DR} \rightarrow {\Large\tau}\)</span></p>
@@ -234,7 +234,7 @@ And further from <strong>Central Limit Theorem:</strong></p>
 <p><span class="math display">\[\hat{\Large\tau}_{DR,\hat{e},\hat{f}_1,\hat{f}_0} \rightarrow {\Large\tau}\]</span></p>
 </div>
 <div id="asymptotic-variance" class="section level2">
-<h2><span class="header-section-number">5.4</span> Asymptotic variance</h2>
+<h2><span class="header-section-number">4.4</span> Asymptotic variance</h2>
 <p><strong>Asymptotic variance of <span class="math inline">\(\hat{\Large\tau}_{IPW}\)</span>:</strong></p>
 <p><span class="math display">\[\begin{align*}
 \text{Var} \bigg[\frac{Y_iA_i}{e(X_i)} - \frac{Y_i(1-A_i)}{1-e(X_i)}\bigg] &amp;= \mathbb{E}\bigg[\frac{Y_iA_i}{e(X_i)} - \frac{Y_i(1-A_i)}{1-e(X_i)}\bigg]^2 - \bigg(\mathbb{E}\bigg[\frac{Y_iA_i}{e(X_i)} - \frac{Y_i(1-A_i)}{1-e(X_i)}\bigg]\bigg)^2\\
@@ -291,12 +291,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -308,6 +307,10 @@ gitbook.start({
 "text": "Edit"
 },
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },
